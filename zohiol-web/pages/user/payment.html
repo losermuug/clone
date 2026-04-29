@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Эрх сунгах - Zohiol Web</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/user.css" />
+</head>
+<body class="user-page">
+
+  <div id="userHeader"></div>
+
+  <section class="user-hero">
+    <div class="user-hero__overlay">
+      <img src="../../assets/images/covers/2.png" alt="banner" />
+    </div>
+
+    <div class="user-hero__content">
+      <div class="user-hero__profile">
+        <img src="../../assets/images/covers/1.png" alt="Avatar" class="user-hero__avatar" />
+        <div class="user-hero__meta">
+          <p class="user-hero__label">Premium Access</p>
+          <h1 class="user-hero__name" id="paymentHeroName">Dorjoo</h1>
+          <p class="user-hero__email" id="paymentHeroEmail">dorjoo@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="user-hero__actions">
+        <button type="button" onclick="goProfile()" class="user-btn-secondary">Миний булан</button>
+        <button type="button" onclick="goTransactions()" class="user-btn-primary">Гүйлгээний түүх</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="user-container">
+    <div class="user-layout">
+      <aside class="user-sidebar">
+        <div class="user-menu">
+          <a href="profile.html">Миний булан</a>
+          <a href="payment.html" class="active">Эрх сунгах</a>
+          <button type="button" onclick="goTransactions()">Гүйлгээний түүх</button>
+          <button type="button" onclick="goMyReading()">Сүүлд уншсан</button>
+          <button type="button" onclick="goFavorites()">Дуртай зохиол</button>
+          <button type="button" onclick="goUserNovels()">Зохиолууд</button>
+        </div>
+      </aside>
+
+      <section class="user-main">
+        <div class="user-card">
+          <h2 class="user-card__title">Эрх сунгах</h2>
+          <p class="payment-lead">
+            Premium эрх идэвхжүүлж, бүх анги болон нэмэлт боломжуудыг ашиглана.
+          </p>
+        </div>
+
+        <div class="user-card">
+          <div class="payment-form-grid">
+            <div class="payment-field">
+              <label for="emailInput">И-мэйл</label>
+              <input
+                id="emailInput"
+                type="email"
+                value="dorjoo@gmail.com"
+                placeholder="И-мэйл хаяг"
+              />
+            </div>
+
+            <div class="payment-field">
+              <label for="nameInput">Нэр</label>
+              <input
+                id="nameInput"
+                type="text"
+                value="Dorjoo"
+                placeholder="Нэр"
+              />
+            </div>
+          </div>
+
+          <div class="payment-section">
+            <h3 class="payment-section__title">Эрхийн багц</h3>
+
+            <div class="payment-plans" id="plans">
+              <button
+                type="button"
+                class="payment-plan-card active"
+                data-name="1 сар"
+                data-price="5000"
+              >
+                <span class="payment-plan-card__badge">ЗӨВЛӨМЖ</span>
+                <h4 class="payment-plan-card__title">1 сар</h4>
+                <p class="payment-plan-card__desc">Эхлэхэд тохиромжтой</p>
+                <div class="payment-plan-card__price">5,000₮</div>
+              </button>
+
+              <button
+                type="button"
+                class="payment-plan-card"
+                data-name="3 сар"
+                data-price="12000"
+              >
+                <span class="payment-plan-card__badge">ХЭМНЭЛТТЭЙ</span>
+                <h4 class="payment-plan-card__title">3 сар</h4>
+                <p class="payment-plan-card__desc">Илүү ашигтай сонголт</p>
+                <div class="payment-plan-card__price">12,000₮</div>
+              </button>
+
+              <button
+                type="button"
+                class="payment-plan-card"
+                data-name="12 сар"
+                data-price="40000"
+              >
+                <span class="payment-plan-card__badge">ШИЛДЭГ</span>
+                <h4 class="payment-plan-card__title">12 сар</h4>
+                <p class="payment-plan-card__desc">Жилийн бүтэн эрх</p>
+                <div class="payment-plan-card__price">40,000₮</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="payment-summary">
+            <div>
+              <p class="payment-summary__label">Сонгосон багц</p>
+              <p id="selectedPlan" class="payment-summary__value">1 сар</p>
+            </div>
+
+            <div>
+              <p class="payment-summary__label">Төлөх дүн</p>
+              <p id="selectedPrice" class="payment-summary__price">5,000₮</p>
+            </div>
+          </div>
+
+          <div class="payment-actions">
+            <button id="payBtn" type="button" class="user-btn-primary">
+              Хадгалах / Төлөх
+            </button>
+
+            <button type="button" onclick="goTransactions()" class="user-btn-secondary">
+              Гүйлгээний түүх харах
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="userFooter"></div>
+
+  <script src="../../js/components.js"></script>
+  <script src="../../js/user-layout.js"></script>
+  <script src="../../js/payment.js"></script>
+  <script>
+    loadComponent("userHeader", "../../components/user-header.html");
+    loadComponent("userFooter", "../../components/user-footer.html");
+  </script>
+</body>
+</html>

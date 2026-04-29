@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Гүйлгээний түүх - Zohiol Web</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/user.css" />
+</head>
+
+<body class="user-page">
+
+  <!-- HEADER -->
+  <div id="userHeader"></div>
+
+  <!-- HERO -->
+  <section class="user-hero">
+    <div class="user-hero__overlay">
+      <img src="../../assets/images/covers/2.png" alt="banner" />
+    </div>
+
+    <div class="user-hero__content">
+      <div class="user-hero__profile">
+        <img src="../../assets/images/covers/1.png" class="user-hero__avatar" />
+
+        <div class="user-hero__meta">
+          <p class="user-hero__label">Transaction History</p>
+          <h1 class="user-hero__name" id="txHeroName">User</h1>
+          <p class="user-hero__email">Таны бүх төлбөрийн бүртгэл</p>
+        </div>
+      </div>
+
+      <div class="user-hero__actions">
+        <button onclick="goPayment()" class="user-btn-primary">
+          Төлбөр хийх
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="user-container">
+    <div class="user-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="user-sidebar">
+        <div class="user-menu">
+          <a href="profile.html">Миний булан</a>
+          <a href="payment.html">Эрх сунгах</a>
+          <a href="transactions.html" class="active">Гүйлгээний түүх</a>
+          <button onclick="goMyReading()">Сүүлд уншсан</button>
+          <button onclick="goFavorites()">Дуртай зохиол</button>
+          <button onclick="goUserNovels()">Зохиолууд</button>
+        </div>
+      </aside>
+
+      <!-- CONTENT -->
+      <section class="user-main">
+
+        <div class="user-card">
+          <h2 class="user-card__title">Гүйлгээний түүх</h2>
+          <p style="color:#64748b;">Таны хийсэн бүх төлбөрийн жагсаалт</p>
+        </div>
+
+        <div class="user-card">
+
+          <div class="transactions-table-wrapper">
+            <table class="transactions-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Багц</th>
+                  <th>Огноо</th>
+                  <th>Төлөв</th>
+                  <th class="text-right">Дүн</th>
+                </tr>
+              </thead>
+
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="userFooter"></div>
+
+  <!-- SCRIPTS -->
+  <script src="../../js/components.js"></script>
+  <script src="../../js/user-layout.js"></script>
+  <script src="../../js/transactions.js"></script>
+
+  <script>
+    loadComponent("userHeader", "../../components/user-header.html");
+    loadComponent("userFooter", "../../components/user-footer.html");
+  </script>
+
+</body>
+</html>                                                                                                         mq                                                                                                                                                                                                                                                                      65    5 ` 

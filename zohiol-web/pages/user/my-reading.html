@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Сүүлд уншсан - Zohiol Web</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:wght@700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../css/user.css"/>
+</head>
+
+<body class="user-page">
+
+  <!-- HEADER -->
+  <div id="userHeader"></div>
+
+  <!-- HERO -->
+  <section class="user-hero">
+    <div class="user-hero__overlay">
+      <img src="../../assets/images/covers/3.png" alt="banner">
+    </div>
+
+    <div class="user-hero__content">
+      <div class="user-hero__profile">
+        <img src="../../assets/images/covers/1.png" class="user-hero__avatar">
+        <div class="user-hero__meta">
+          <p class="user-hero__label">Reading Progress</p>
+          <h1 class="user-hero__name" id="readingHeroName">User</h1>
+          <p class="user-hero__email">Уншиж байсан зохиолуудаа үргэлжлүүлнэ</p>
+        </div>
+      </div>
+
+      <div class="user-hero__actions">
+        <button onclick="goFavorites()" class="user-btn-secondary">Дуртай</button>
+        <button onclick="goUserProfile()" class="user-btn-primary">Миний булан</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="user-container">
+    <div class="user-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="user-sidebar">
+        <div class="user-menu">
+          <a href="profile.html">Миний булан</a>
+          <a href="payment.html">Эрх сунгах</a>
+          <a href="transactions.html">Гүйлгээний түүх</a>
+          <a href="my-reading.html" class="active">Сүүлд уншсан</a>
+          <button onclick="goFavorites()">Дуртай зохиол</button>
+          <button onclick="goUserNovels()">Зохиолууд</button>
+        </div>
+      </aside>
+
+      <!-- CONTENT -->
+      <section class="user-main">
+
+        <!-- FILTER -->
+        <div class="user-card">
+          <div class="flex flex-col md:flex-row md:justify-between gap-4">
+
+            <div>
+              <h2 class="user-card__title">Сүүлд уншсан</h2>
+              <p class="text-gray-500 text-sm">Үргэлжлүүлэн унших боломжтой</p>
+            </div>
+
+            <div class="flex gap-3 flex-wrap">
+              <input id="searchInput"
+                placeholder="Хайх..."
+                class="border px-4 py-3 rounded-xl"/>
+
+              <select id="sortSelect"
+                class="border px-4 py-3 rounded-xl">
+                <option value="default">Эрэмбэлэх</option>
+                <option value="high">Их уншсан</option>
+                <option value="low">Бага уншсан</option>
+                <option value="name">Нэрээр</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- GRID -->
+        <div id="readingGrid" class="grid md:grid-cols-2 gap-6"></div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="userFooter"></div>
+
+  <!-- SCRIPTS -->
+  <script src="../../js/components.js"></script>
+  <script src="../../js/user-layout.js"></script>
+  <script src="../../js/reading.js"></script>
+
+  <script>
+    loadComponent("userHeader", "../../components/user-header.html");
+    loadComponent("userFooter", "../../components/user-footer.html");
+  </script>
+
+</body>
+</html>

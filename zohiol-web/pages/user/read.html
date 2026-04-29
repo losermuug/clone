@@ -1,0 +1,113 @@
+<!-- READ PAGE CONTENT -->
+<main class="reader-page">
+  <section class="reader-wrap pt-8 pb-6">
+    <div class="reader-shell">
+      <div class="reader-topbar px-6 md:px-10 py-6">
+        <div class="reader-head">
+          <div class="reader-head-row">
+            <div class="reader-head-left">
+              <p id="novelCategory" class="chip bg-red-100 text-red-700"></p>
+              <h1 id="novelTitle" class="reader-main-title serif"></h1>
+              <p id="chapterTitle" class="reader-sub-title"></p>
+              <p id="chapterMeta" class="reader-meta"></p>
+            </div>
+            <div class="reader-head-actions">
+              <a href="#" id="backToDetail" class="control-btn">Дэлгэрэнгүй рүү</a>
+              <a href="#" id="allChaptersBtnTop" class="control-btn">Бүх анги</a>
+            </div>
+          </div>
+          <div class="reader-progress-box">
+            <div class="reader-progress-row">
+              <span class="meta-label">Уншиж буй явц</span>
+              <span id="progressText" class="meta-value"></span>
+            </div>
+            <div class="progress-line">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <article class="reader-body px-6 py-10 md:px-14 md:py-14">
+        <div id="chapterContent" class="reader-text"></div>
+      </article>
+    </div>
+  </section>
+  <section class="reader-wrap pb-16">
+    <div class="chapter-nav-shell">
+      <button id="prevChapterBtn" class="bottom-btn bottom-btn-light">← Өмнөх анги</button>
+      <a href="#" id="allChaptersBtn" class="bottom-btn bottom-btn-dark">Бүх анги</a>
+      <button id="nextChapterBtn" class="bottom-btn bottom-btn-red">Дараагийн анги →</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(function() {
+  var currentUser = localStorage.getItem("user");
+  var currentRole = localStorage.getItem("role");
+  if (!currentUser || currentRole !== "user") {
+    window.location.href = "./pages/auth/login.html";
+    return;
+  }
+
+  var urlParams = new URLSearchParams(window.location.search);
+  var novelId = parseInt(urlParams.get("id"),10) || 1;
+  var chapterNumber = parseInt(urlParams.get("chapter"),10) || 1;
+
+  var novels = {
+    1: { title:"Тулааны Бурхан Асура", author:"Б. Эрдэнэбат", category:"Тулаант", totalChapters:128 },
+    2: { title:"Харанхуйн Хаан", author:"С. Болормаа", category:"Уран зөгнөл", totalChapters:87 },
+    3: { title:"Сүнсний Зам", author:"Д. Наранбаатар", category:"Адал явдал", totalChapters:62 },
+    4: { title:"Зүрхний Дуу", author:"О. Сувд", category:"Романтик", totalChapters:94 }
+  };
+
+  var chapterTitles = ["Гадаад танхимийн шавь","Үзэгдэлэнт настан","Шалгалт эхэллээ","Догшин араатнууд","Азурэ Драгон","Арай тэр гэж үү?","Сүнслэг ургамлын эрэлд","Санаандгүй уулзалт","Би гэрчилнэ","Хэлсэн амнаасаа буцав"];
+
+  var novel = novels[novelId] || novels[1];
+  var safeChapter = Math.min(Math.max(chapterNumber,1), novel.totalChapters);
+  var currentTitle = chapterTitles[(safeChapter-1)%chapterTitles.length];
+  var progressPercent = Math.round((safeChapter/novel.totalChapters)*100);
+
+  document.title = novel.title + " - " + safeChapter + "-р анги";
+  document.getElementById("novelCategory").textContent = novel.category;
+  document.getElementById("novelTitle").textContent = novel.title;
+  document.getElementById("chapterTitle").textContent = safeChapter + " – " + currentTitle;
+  document.getElementById("chapterMeta").textContent = novel.author + " • Нийт " + novel.totalChapters + " анги";
+  document.getElementById("progressText").textContent = safeChapter+"/"+novel.totalChapters+" • "+progressPercent+"%";
+  document.getElementById("progressFill").style.width = progressPercent+"%";
+
+  // Back/All chapters buttons -> detail via SPA
+  document.getElementById("backToDetail").onclick = function(e) { e.preventDefault(); goDetail(novelId); };
+  document.getElementById("allChaptersBtn").onclick = function(e) { e.preventDefault(); goDetail(novelId); };
+  document.getElementById("allChaptersBtnTop").onclick = function(e) { e.preventDefault(); goDetail(novelId); };
+
+  var content = document.getElementById("chapterContent");
+  var paragraphs = [
+    novel.title+"-ын "+safeChapter+"-р анги эхэлж байлаа. Өглөөний манан сарниж, алсад уулсын орой улаан туяанд гэрэлтэнэ.",
+    "Тэрээр энэ удаагийн алхам бүр нь ирээдүйн хувь тавиланг нь өөрчилж мэдэхийг ойлгож байв.",
+    "Хотын зах руу дөхөх тусам орчин улам ширүүсэж, үл таних хүмүүсийн харц түүн рүү чиглэнэ.",
+    "\"Жинхэнэ хүч бол зөвхөн ялалт биш, харин хэзээ, юуг хамгаалахаа мэдэх ухаан юм\" гэж шивнэв.",
+    "Дараагийн ангид түүний сонголт бүхнийг өөрчилж мэдэх юм."
+  ];
+  content.innerHTML = "";
+  paragraphs.forEach(function(text) { var p = document.createElement("p"); p.textContent = text; content.appendChild(p); });
+
+  // Prev/Next chapter buttons
+  var prevBtn = document.getElementById("prevChapterBtn");
+  var nextBtn = document.getElementById("nextChapterBtn");
+
+  if (safeChapter > 1) {
+    prevBtn.onclick = function() { goRead(novelId, safeChapter-1); };
+  } else {
+    prevBtn.classList.add("disabled");
+    prevBtn.onclick = function() {};
+  }
+
+  if (safeChapter < novel.totalChapters) {
+    nextBtn.onclick = function() { goRead(novelId, safeChapter+1); };
+  } else {
+    nextBtn.classList.add("disabled");
+    nextBtn.onclick = function() {};
+  }
+})();
+</script>

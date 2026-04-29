@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Нэвтрэх - Zohiol Web</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:wght@700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../css/style.css"/>
+</head>
+
+<body class="min-h-screen bg-slate-100 text-slate-800">
+
+<div class="grid min-h-screen lg:grid-cols-2">
+
+  <!-- LEFT -->
+  <section class="relative hidden lg:flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-red-950">
+    <div class="absolute inset-0 opacity-20">
+      <img src="../../assets/images/covers/2.png" class="w-full h-full object-cover">
+    </div>
+
+    <div class="relative z-10 max-w-lg px-10 text-white">
+      <p class="text-sm uppercase tracking-[4px] text-red-300 font-semibold">Zohiol Web</p>
+      <h1 class="mt-4 text-5xl font-bold serif leading-tight">
+        Уншсан түүхээ хадгалж, үргэлжлүүлэн уншаарай
+      </h1>
+    </div>
+  </section>
+
+  <!-- RIGHT -->
+  <section class="flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-md">
+
+      <div class="mb-8 text-center lg:text-left">
+        <a href="../../index.html" class="inline-flex items-center gap-3">
+          <img src="../../assets/images/logo/logo.png" class="w-11 h-11">
+          <span class="text-3xl font-bold text-red-700 serif">Зохиол</span>
+        </a>
+      </div>
+
+      <div class="rounded-[30px] bg-white p-8 shadow-xl border">
+
+        <h2 class="text-3xl font-bold serif mb-6">Нэвтрэх</h2>
+
+        <form id="loginForm" class="space-y-5">
+
+          <input id="username" type="text" placeholder="Имэйл"
+            class="w-full rounded-2xl border px-4 py-3" required>
+
+          <input id="password" type="password" placeholder="Нууц үг"
+            class="w-full rounded-2xl border px-4 py-3" required>
+
+          <button type="submit"
+            class="w-full bg-red-700 text-white py-3 rounded-2xl">
+            Нэвтрэх
+          </button>
+
+        </form>
+
+        <p class="mt-5 text-center">
+          <a href="register.html" class="text-red-600">Бүртгүүлэх</a>
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<script src="../../js/auth.js"></script>
+
+</body>
+</html>

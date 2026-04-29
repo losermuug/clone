@@ -1,0 +1,91 @@
+<!-- POPULAR PAGE CONTENT -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+  <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-10">
+    <div>
+      <h1 class="text-4xl font-bold serif">Алдартай зохиолууд</h1>
+      <p class="text-gray-600 mt-2">Хамгийн их уншигдсан, хамгийн эрэлттэй зохиолууд</p>
+    </div>
+  </div>
+
+  <div id="novelsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+</section>
+
+<script>
+  (function() {
+    const novels = [
+      {
+        id: 1,
+        title: "Тулааны Бурхан Асура",
+        description: "Эртний хүчийг өвлөсөн залуу тулаанчийн түүх.",
+        category: "Тулаант",
+        image: "./assets/images/covers/1.png",
+        views: 24560
+      },
+      {
+        id: 2,
+        title: "Харанхуйн Хаан",
+        description: "Харанхуйн ертөнцийг захирах домог.",
+        category: "Уран зөгнөл",
+        image: "./assets/images/covers/2.png",
+        views: 19840
+      },
+      {
+        id: 3,
+        title: "Сүнсний Зам",
+        description: "Аялал, нууц, сорилтууд.",
+        category: "Адал явдал",
+        image: "./assets/images/covers/3.png",
+        views: 15620
+      },
+      {
+        id: 4,
+        title: "Зүрхний Дуу",
+        description: "Хайр дурлалын уянгалаг түүх.",
+        category: "Романтик",
+        image: "./assets/images/covers/D.png",
+        views: 11290
+      }
+    ];
+
+    // Sort by views (most popular first)
+    novels.sort((a, b) => b.views - a.views);
+
+    const grid = document.getElementById("novelsGrid");
+
+    novels.forEach((novel, index) => {
+      grid.innerHTML += `
+        <a href="#" data-spa-link="detail" data-id="${novel.id}"
+           class="group bg-white rounded-3xl overflow-hidden cursor-pointer card-hover shadow-sm block relative">
+          
+          <div class="absolute top-4 left-4 bg-red-700 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+            #${index + 1}
+          </div>
+
+          <img src="${novel.image}" 
+               class="w-full h-72 object-cover" 
+               alt="${novel.title}">
+
+          <div class="p-6">
+            <span class="text-xs bg-red-50 text-red-700 px-3 py-1 rounded-full">
+              ${novel.category}
+            </span>
+
+            <h3 class="text-xl font-semibold mt-4">
+              ${novel.title}
+            </h3>
+
+            <p class="text-gray-600 text-sm mt-2">
+              ${novel.description}
+            </p>
+
+            <p class="text-xs text-gray-400 mt-2">${novel.views.toLocaleString()} үзэлт</p>
+
+            <span class="mt-5 w-full bg-red-700 text-white py-3 rounded-2xl inline-flex justify-center">
+              Дэлгэрэнгүй
+            </span>
+          </div>
+        </a>
+      `;
+    });
+  })();
+</script>

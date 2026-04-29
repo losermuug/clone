@@ -1,0 +1,126 @@
+<!-- DETAIL PAGE CONTENT -->
+<style>
+  .chapter-item { transition: all 0.2s ease; border-bottom: 1px solid #e5e7eb; }
+  .chapter-item:hover { background: #fff7f7; }
+  .page-btn.active { background: #111827; color: white; }
+</style>
+
+<section class="max-w-7xl mx-auto px-6 py-10">
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+    <div class="lg:col-span-1">
+      <img id="novelImage" src="./assets/images/covers/1.png" alt="cover" class="w-full h-[440px] object-cover rounded-3xl shadow-lg" />
+      <div class="mt-6 bg-white rounded-3xl p-6 shadow-sm">
+        <span id="novelCategoryBadge" class="inline-block bg-red-100 text-red-700 text-xs px-3 py-1 rounded-full mb-4"></span>
+        <h1 id="novelTitle" class="text-3xl font-bold serif leading-tight"></h1>
+        <p id="novelAuthor" class="text-gray-600 mt-3"></p>
+        <p id="novelStats" class="text-gray-500 mt-1"></p>
+        <p id="novelDesc" class="text-sm text-gray-600 leading-7 mt-5"></p>
+        <div class="mt-6 flex gap-3 flex-wrap">
+          <button id="readFirstBtn" onclick="" class="bg-red-700 hover:bg-red-800 text-white px-5 py-3 rounded-2xl font-medium">Эхний ангийг унших</button>
+          <a href="#" data-spa-link="novels" class="border border-gray-300 hover:bg-gray-100 px-5 py-3 rounded-2xl font-medium">Буцах</a>
+        </div>
+      </div>
+    </div>
+    <div class="lg:col-span-3">
+      <div class="bg-white rounded-3xl shadow-sm p-6 md:p-8">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-8">
+          <div>
+            <h2 class="text-4xl font-bold serif">Гарч буй ангиуд</h2>
+            <p class="text-gray-500 mt-2">Ангийн дугаараар хайж шууд унших боломжтой</p>
+          </div>
+          <div class="flex items-center gap-3 flex-wrap">
+            <input type="number" id="chapterSearch" placeholder="Ангийн дугаар" class="w-56 border border-gray-300 rounded-2xl px-4 py-3 outline-none focus:border-red-500" min="1" />
+            <button id="searchBtn" class="bg-gray-900 hover:bg-black text-white px-8 py-3 rounded-2xl font-medium">Хайх</button>
+            <button id="toggleLatestBtn" class="border border-gray-300 hover:bg-gray-100 px-5 py-3 rounded-2xl font-medium">Сүүлд нэмэгдсэн</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 id="chapterSectionTitle" class="text-xl font-semibold">Бүх ангиуд</h3>
+            <p id="chapterSectionDesc" class="text-sm text-gray-500 mt-1">Хуудасалж харуулж байна</p>
+          </div>
+          <div class="flex items-center gap-2" id="pagination"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8" id="chaptersGrid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var novelId = Number(urlParams.get("id")) || 1;
+
+  var novels = {
+    1: { title:"Тулааны Бурхан Асура", author:"Б. Эрдэнэбат", category:"Тулаант", image:"./assets/images/covers/1.png", desc:"Эртний хүчийг өвлөсөн залуу тулаанчийн хүч чадал, сорилт, адал явдлын түүх.", chapters:128, views:24560 },
+    2: { title:"Харанхуйн Хаан", author:"С. Болормаа", category:"Уран зөгнөл", image:"./assets/images/covers/2.png", desc:"Харанхуйн ертөнцийг захирах домогт хааны тухай уран зөгнөлт зохиол.", chapters:87, views:19840 },
+    3: { title:"Сүнсний Зам", author:"Д. Наранбаатар", category:"Адал явдал", image:"./assets/images/covers/3.png", desc:"Нууцлаг зам, сорилт, эрэл хайгуул дунд өрнөх адал явдал.", chapters:62, views:15620 },
+    4: { title:"Зүрхний Дуу", author:"О. Сувд", category:"Романтик", image:"./assets/images/covers/D.png", desc:"Хайр дурлал, мэдрэмж, сонголтын тухай уянгалаг романтик түүх.", chapters:94, views:11290 }
+  };
+
+  var chapterTitles = ["Гадаад танхимийн шавь","Үзэгдэлэнт настан","Шалгалт эхэллээ","Догшин араатнууд","Азурэ Драгон үүсгэн байгуулагч","Арай тэр гэж үү?","Сүнслэг ургамлын эрэлд","Санаандгүй уулзалт","Би гэрчилнэ","Хэлсэн амнаасаа буцав"];
+
+  var novel = novels[novelId] || novels[1];
+  var currentPage = 1;
+  var latestMode = false;
+  var perPage = 20;
+
+  document.title = novel.title + " - Zohiol Web";
+  document.getElementById("novelImage").src = novel.image;
+  document.getElementById("novelCategoryBadge").textContent = novel.category;
+  document.getElementById("novelTitle").textContent = novel.title;
+  document.getElementById("novelAuthor").textContent = "Зохиолч: " + novel.author;
+  document.getElementById("novelStats").textContent = novel.chapters + " анги • " + novel.views.toLocaleString() + " үзэлт";
+  document.getElementById("novelDesc").textContent = novel.desc;
+  document.getElementById("readFirstBtn").onclick = function() { goRead(novelId, 1); };
+
+  function getChapterTitle(num) { return chapterTitles[(num-1) % chapterTitles.length]; }
+
+  function getAllChapters() {
+    var arr = [];
+    for (var i=1; i<=novel.chapters; i++) arr.push({ number:i, title:getChapterTitle(i) });
+    if (latestMode) return arr.reverse();
+    return arr;
+  }
+
+  function renderChapters() {
+    var chaptersGrid = document.getElementById("chaptersGrid");
+    var pagination = document.getElementById("pagination");
+    var all = getAllChapters();
+    var totalPages = Math.ceil(all.length / perPage);
+    var start = (currentPage-1) * perPage;
+    var pageItems = all.slice(start, start + perPage);
+
+    chaptersGrid.innerHTML = "";
+    pageItems.forEach(function(ch) {
+      chaptersGrid.innerHTML += '<a href="#" onclick="goRead('+novelId+','+ch.number+'); return false;" class="chapter-item flex justify-between items-center py-4 px-3 rounded-xl"><div><p class="font-semibold">'+ch.number+'-р анги</p><p class="text-sm text-gray-500">'+ch.title+'</p></div><span class="text-red-700 text-sm font-medium">Унших</span></a>';
+    });
+
+    pagination.innerHTML = "";
+    for (var i=1; i<=totalPages; i++) {
+      pagination.innerHTML += '<button onclick="window._detailGoPage('+i+')" class="page-btn '+(i===currentPage?"active":"")+' w-9 h-9 rounded-xl border text-sm">'+i+'</button>';
+    }
+
+    document.getElementById("chapterSectionDesc").textContent = currentPage+"/"+totalPages+" хуудас • Нийт "+novel.chapters+" анги";
+  }
+
+  window._detailGoPage = function(page) { currentPage = page; renderChapters(); };
+
+  document.getElementById("searchBtn").addEventListener("click", function() {
+    var num = Number(document.getElementById("chapterSearch").value);
+    if (!num || num<1 || num>novel.chapters) { alert("Зөв ангийн дугаар оруулна уу!"); return; }
+    goRead(novelId, num);
+  });
+
+  document.getElementById("toggleLatestBtn").addEventListener("click", function() {
+    latestMode = !latestMode;
+    currentPage = 1;
+    this.textContent = latestMode ? "Эхнээс нь харах" : "Сүүлд нэмэгдсэн";
+    document.getElementById("chapterSectionTitle").textContent = latestMode ? "Сүүлд нэмэгдсэн ангиуд" : "Бүх ангиуд";
+    renderChapters();
+  });
+
+  renderChapters();
+})();
+</script>

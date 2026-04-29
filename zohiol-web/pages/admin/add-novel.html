@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Зохиол нэмэх</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+
+<body>
+  <div class="admin-shell">
+    <div id="adminSidebar"></div>
+
+    <main class="admin-main">
+      <div id="adminTopbar"></div>
+
+      <div class="max-w-3xl admin-panel p-8">
+        <form id="addNovelForm" class="space-y-6">
+
+          <div>
+            <label class="block text-sm font-semibold mb-2">Зохиолын нэр</label>
+            <input
+              id="title"
+              type="text"
+              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
+              placeholder="Жишээ: Тэнгэрийн тулаанч"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold mb-2">Зохиолч</label>
+              <input
+                id="author"
+                type="text"
+                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold mb-2">Ангилал</label>
+              <select
+                id="category"
+                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 bg-white"
+              >
+                <option>Тулаант</option>
+                <option>Уран зөгнөл</option>
+                <option>Адал явдал</option>
+                <option>Романтик</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold mb-2">Тайлбар</label>
+            <textarea
+              id="desc"
+              rows="4"
+              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 resize-none"
+            ></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold mb-2">Cover зураг (path)</label>
+            <input
+              id="image"
+              type="text"
+              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
+              placeholder="../../assets/images/covers/book.png"
+            />
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4 pt-2">
+            <button
+              type="button"
+              onclick="addNovel()"
+              class="flex-1 bg-red-600 hover:bg-red-700 text-white py-4 rounded-2xl font-semibold transition"
+            >
+              Нэмэх
+            </button>
+
+            <button
+              type="button"
+              onclick="history.back()"
+              class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-900 py-4 rounded-2xl font-semibold transition"
+            >
+              Болих
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../js/components.js"></script>
+  <script src="../../js/admin-layout.js"></script>
+  <script>
+    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
+    loadComponent("adminTopbar", "../../components/admin-topbar.html");
+
+    function addNovel() {
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+      const category = document.getElementById("category").value.trim();
+      const desc = document.getElementById("desc").value.trim();
+      const image = document.getElementById("image").value.trim();
+
+      if (!title) {
+        alert("Зохиолын нэр оруул!");
+        return;
+      }
+
+      const newNovel = {
+        title,
+        author,
+        category,
+        desc,
+        image
+      };
+
+      const novels = JSON.parse(localStorage.getItem("adminNovels") || "[]");
+      novels.push(newNovel);
+      localStorage.setItem("adminNovels", JSON.stringify(novels));
+
+      alert("Амжилттай нэмэгдлээ");
+      window.location.href = "novels-list.html";
+    }
+  </script>
+</body>
+</html>

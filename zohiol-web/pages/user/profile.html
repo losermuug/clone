@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Миний булан - Zohiol Web</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/user.css" />
+</head>
+
+<body class="user-page">
+
+  <!-- HEADER -->
+  <div id="userHeader"></div>
+
+  <!-- HERO -->
+  <section class="user-hero">
+    <div class="user-hero__overlay">
+      <img src="../../assets/images/covers/2.png" alt="banner" />
+    </div>
+
+    <div class="user-hero__content">
+      <div class="user-hero__profile">
+
+        <img src="../../assets/images/covers/1.png" alt="Avatar" class="user-hero__avatar" />
+
+        <div class="user-hero__meta">
+          <p class="user-hero__label">My Account</p>
+
+          <!-- ✅ dynamic -->
+          <h1 class="user-hero__name" id="profileName">User</h1>
+          <p class="user-hero__email" id="profileEmail">email@gmail.com</p>
+        </div>
+
+      </div>
+
+      <div class="user-hero__actions">
+        <button onclick="goPayment()" class="user-btn-secondary">Эрх сунгах</button>
+        <button onclick="goTransactions()" class="user-btn-primary">Гүйлгээний түүх</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="user-container">
+    <div class="user-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="user-sidebar">
+        <div class="user-menu">
+          <a href="profile.html" class="active">Миний булан</a>
+          <button onclick="goPayment()">Эрх сунгах</button>
+          <button onclick="goTransactions()">Гүйлгээний түүх</button>
+          <button onclick="goMyReading()">Сүүлд уншсан</button>
+          <button onclick="goFavorites()">Дуртай зохиол</button>
+          <button onclick="goUserNovels()">Зохиолууд</button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <section class="user-main">
+
+        <!-- STATS -->
+        <div class="user-stats">
+
+          <div class="user-card user-stat">
+            <div class="user-stat__label">Хэтэвч</div>
+            <div class="user-stat__value">0 ₮</div>
+          </div>
+
+          <div class="user-card user-stat">
+            <div class="user-stat__label">Уншсан зохиол</div>
+            <div class="user-stat__value" style="color:#dc2626;">47</div>
+          </div>
+
+          <div class="user-card user-stat">
+            <div class="user-stat__label">Дуртай зохиол</div>
+            <div class="user-stat__value" style="color:#f97316;">12</div>
+          </div>
+
+        </div>
+
+        <!-- GRID -->
+        <div class="user-grid">
+
+          <!-- USER INFO -->
+          <div class="user-card">
+            <h3 class="user-card__title">Хэрэглэгчийн мэдээлэл</h3>
+
+            <div class="user-info-row">
+              <span>Хэрэглэгчийн нэр</span>
+              <strong id="infoName">-</strong>
+            </div>
+
+            <div class="user-info-row">
+              <span>Имэйл</span>
+              <strong id="infoEmail">-</strong>
+            </div>
+
+            <div class="user-info-row">
+              <span>Эрх дуусах огноо</span>
+              <strong>2026-03-15</strong>
+            </div>
+
+            <div class="user-info-row">
+              <span>Премиум эрх</span>
+              <strong style="color:#16a34a;">Идэвхтэй</strong>
+            </div>
+          </div>
+
+          <!-- FAVORITE -->
+          <div class="user-card user-favorite">
+
+            <img src="../../assets/images/covers/1.png" alt="Favorite Novel" />
+
+            <div class="user-favorite__body">
+              <div class="user-favorite__badge">Хамгийн дуртай зохиол</div>
+
+              <h3 class="user-favorite__title">Тулааны Бурхан Асура</h3>
+
+              <p style="margin-top:12px; color:#64748b;">
+                Зохиолч: Б. Эрдэнэбат
+              </p>
+
+              <p class="user-favorite__text">
+                Эртний хүчийг өвлөсөн залуу тулаанчийн адал явдал, өсөлт хөгжлийн тухай сонирхолтой урт туурь.
+              </p>
+
+              <div class="user-favorite__actions">
+                <button onclick="goDetail(1)" class="user-btn-primary">Дэлгэрэнгүй</button>
+                <button onclick="goFavorites()" class="user-btn-secondary">Бүгдийг харах</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="userFooter"></div>
+
+  <!-- SCRIPTS -->
+  <script src="../../js/components.js"></script>
+  <script src="../../js/user-layout.js"></script>
+
+  <script>
+    loadComponent("userHeader", "../../components/user-header.html");
+    loadComponent("userFooter", "../../components/user-footer.html");
+  </script>
+
+</body>
+</html>

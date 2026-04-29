@@ -1,0 +1,51 @@
+<nav class="bg-white/95 backdrop-blur shadow-sm sticky top-0 z-50 border-b">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+    <a href="../../index.html" class="flex items-center gap-3">
+      <img src="../../assets/images/logo/logo.png" alt="Logo" class="w-10 h-10 object-contain">
+      <span class="text-3xl font-bold text-red-700 serif tracking-tight">Зохиол</span>
+    </a>
+
+    <div class="hidden md:flex gap-8 text-sm font-medium">
+      <a href="../../index.html?page=novels" class="nav-link hover:text-red-600">Зохиолууд</a>
+      <a href="../../index.html?page=new-novels" class="nav-link hover:text-red-600">Шинэ зохиол</a>
+      <a href="../../index.html?page=popular" class="nav-link hover:text-red-600">Алдартай</a>
+      <a href="../../index.html?page=new-chapters" class="nav-link hover:text-red-600">Шинэ ангиуд</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Зохиол хайх..."
+        class="hidden md:block bg-gray-100 border border-gray-300 rounded-full px-5 py-2.5 w-64 focus:outline-none focus:border-red-500 text-sm"
+      />
+
+      <div id="guestActions" class="flex items-center gap-3">
+        <a href="../../pages/auth/login.html"
+           class="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-2xl">
+          Нэвтрэх
+        </a>
+
+        <a href="../../pages/auth/register.html"
+           class="bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-2xl text-sm font-medium">
+          Бүртгүүлэх
+        </a>
+      </div>
+
+      <div id="userActions" class="hidden items-center gap-3">
+        <span id="navUsername" class="text-sm font-medium text-gray-700"></span>
+
+        <a href="../../pages/user/profile.html"
+           class="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-2xl">
+          Профайл
+        </a>
+
+        <button id="logoutBtn"
+          class="bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-2xl text-sm font-medium">
+          Гарах
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

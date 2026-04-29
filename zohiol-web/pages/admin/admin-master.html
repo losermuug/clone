@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Master</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+
+<body>
+
+  <div class="admin-shell">
+    <div id="adminSidebar"></div>
+
+    <main class="admin-main">
+      <div id="adminTopbar"></div>
+
+      <section id="pageContent">
+        <!-- Энд admin page-ийн content орно -->
+      </section>
+    </main>
+  </div>
+
+  <script src="../../js/components.js"></script>
+  <script src="../../js/admin-layout.js"></script>
+  <script>
+    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
+    loadComponent("adminTopbar", "../../components/admin-topbar.html");
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Дуртай зохиол - Zohiol Web</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/user.css" />
+</head>
+<body class="user-page">
+
+  <div id="userHeader"></div>
+
+  <section class="user-hero">
+    <div class="user-hero__overlay">
+      <img src="../../assets/images/covers/2.png" alt="banner" />
+    </div>
+
+    <div class="user-hero__content">
+      <div class="user-hero__profile">
+        <img src="../../assets/images/covers/1.png" alt="Avatar" class="user-hero__avatar" />
+        <div class="user-hero__meta">
+          <p class="user-hero__label">Favorite Novels</p>
+          <h1 class="user-hero__name" id="favoritesHeroName">Dorjoo</h1>
+          <p class="user-hero__email">Дуртай зохиолуудаа эндээс хурдан нээж уншина</p>
+        </div>
+      </div>
+
+      <div class="user-hero__actions">
+        <button type="button" onclick="goMyReading()" class="user-btn-secondary">Сүүлд уншсан</button>
+        <button type="button" onclick="goUserProfile()" class="user-btn-primary">Миний булан</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="user-container">
+    <div class="user-layout">
+      <aside class="user-sidebar">
+        <div class="user-menu">
+          <a href="profile.html">Миний булан</a>
+          <a href="payment.html">Эрх сунгах</a>
+          <button type="button" onclick="goTransactions()">Гүйлгээний түүх</button>
+          <button type="button" onclick="goMyReading()">Сүүлд уншсан</button>
+          <a href="favorites.html" class="active">Дуртай зохиол</a>
+          <button type="button" onclick="goUserNovels()">Зохиолууд</button>
+        </div>
+      </aside>
+
+      <section class="user-main">
+        <div class="user-card">
+          <div class="favorites-toolbar">
+            <div>
+              <h2 class="user-card__title">Дуртай зохиол</h2>
+              <p class="favorites-toolbar__text">Хадгалсан зохиолуудаа эндээс удирдана</p>
+            </div>
+
+            <input
+              id="favoritesSearchInput"
+              type="text"
+              placeholder="Дуртай зохиолоос хайх..."
+              class="favorites-search"
+            />
+          </div>
+        </div>
+
+        <div id="favoritesGrid" class="favorites-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="userFooter"></div>
+
+  <script src="../../js/components.js"></script>
+  <script src="../../js/user-layout.js"></script>
+  <script src="../../js/favorites.js"></script>
+  <script>
+    loadComponent("userHeader", "../../components/user-header.html");
+    loadComponent("userFooter", "../../components/user-footer.html");
+  </script>
+</body>
+</html>

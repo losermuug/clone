@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Зохиолууд</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+
+<body>
+  <div class="admin-shell">
+    <div id="adminSidebar"></div>
+
+    <main class="admin-main">
+      <div id="adminTopbar"></div>
+
+      <!-- SEARCH + ADD -->
+      <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Зохиол хайх..."
+          class="w-full lg:w-72 px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-red-500 text-sm"
+        >
+
+        <a href="add-novel.html"
+          class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm text-center">
+          + Шинэ нэмэх
+        </a>
+      </div>
+
+      <!-- STATS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="admin-panel p-5">
+          <p class="text-xs text-slate-400">Нийт зохиол</p>
+          <p id="totalNovels" class="text-2xl font-bold mt-1">0</p>
+        </div>
+
+        <div class="admin-panel p-5">
+          <p class="text-xs text-slate-400">Төрөл</p>
+          <p id="totalCategories" class="text-2xl font-bold mt-1">0</p>
+        </div>
+
+        <div class="admin-panel p-5">
+          <p class="text-xs text-slate-400">Нийт үзэлт</p>
+          <p id="totalViews" class="text-2xl font-bold mt-1">0</p>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div id="list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"></div>
+    </main>
+  </div>
+
+  <script src="../../js/components.js"></script>
+  <script src="../../js/admin-layout.js"></script>
+
+  <script>
+    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
+    loadComponent("adminTopbar", "../../components/admin-topbar.html");
+
+    let novels = JSON.parse(localStorage.getItem("adminNovels")) || [
+      {
+        id: 1,
+        title: "Тулааны Бурхан Асура",
+        category: "Тулаант",
+        author: "Б. Эрдэнэбат",
+        chapters: 128,
+        views: 24560,
+        img: "../../assets/images/covers/1.png"
+      },
+      {
+        id: 2,
+        title: "Харанхуйн Хаан",
+        category: "Уран зөгнөл",
+        author: "С. Болормаа",
+        chapters: 87,
+        views: 19840,
+        img: "../../assets/images/covers/2.png"
+      }
+    ];
+
+    const container = document.getElementById("list");
+    const searchInput = document.getElementById("searchInput");
+
+    function updateStats(data = novels) {
+      document.getElementById("totalNovels").textContent = data.length;
+      document.getElementById("totalCategories").textContent =
+        new Set(data.map(n => n.category)).size;
+      document.getElementById("totalViews").textContent =
+        data.reduce((sum, n) => sum + (n.views || 0), 0).toLocaleString();
+    }
+
+    function render(data = novels) {
+      container.innerHTML = "";
+
+      if (!data.length) {
+        container.innerHTML = `
+          <div class="admin-panel p-8 text-center col-span-full">
+            <h3 class="text-lg font-bold">Илэрц олдсонгүй</h3>
+          </div>
+        `;
+        updateStats([]);
+        return;
+      }
+
+      data.forEach((n) => {
+        container.innerHTML += `
+          <div class="admin-panel overflow-hidden flex flex-col text-sm">
+
+            <!-- CLICK AREA -->
+            <div onclick="openNovel(${n.id})" class="cursor-pointer">
+              <img src="${n.img}" class="w-full h-44 object-cover">
+
+              <div class="p-4">
+                <span class="text-xs bg-slate-100 px-2 py-1 rounded-full">
+                  ${n.category}
+                </span>
+
+                <h3 class="font-semibold mt-2 leading-5 min-h-[40px]">
+                  ${n.title}
+                </h3>
+
+                <p class="text-xs text-slate-500 mt-1">
+                  ${n.author}
+                </p>
+
+                <div class="flex justify-between mt-3 text-xs text-slate-600">
+                  <span>📚 ${n.chapters}</span>
+                  <span>👁 ${Number(n.views).toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="flex gap-2 px-3 pb-3 mt-auto">
+              <button onclick="editNovel(${n.id})"
+                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs">
+                Засах
+              </button>
+
+              <button onclick="deleteNovel(${n.id})"
+                class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-xs">
+                Устгах
+              </button>
+            </div>
+
+          </div>
+        `;
+      });
+
+      updateStats(data);
+    }
+
+    // 👉 ЗОХИОЛ ДАРАХАД АНГИ РУУ ШИЛЖИНЭ
+    function openNovel(id) {
+      window.location.href = `add-chapter.html?novelId=${id}`;
+    }
+
+    function editNovel(id) {
+      window.location.href = `edit-novel.html?id=${id}`;
+    }
+
+    function deleteNovel(id) {
+      if (confirm("Устгах уу?")) {
+        novels = novels.filter(n => n.id !== id);
+        localStorage.setItem("adminNovels", JSON.stringify(novels));
+        render();
+      }
+    }
+
+    searchInput.addEventListener("input", function () {
+      const q = this.value.toLowerCase();
+
+      const filtered = novels.filter(n =>
+        n.title.toLowerCase().includes(q) ||
+        n.author.toLowerCase().includes(q) ||
+        n.category.toLowerCase().includes(q)
+      );
+
+      render(filtered);
+    });
+
+    render();
+  </script>
+</body>
+</html>
