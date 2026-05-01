@@ -1,18 +1,32 @@
-<!-- master.html -->
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Master - Preview</title>
 
-<header class="bg-white/95 backdrop-blur shadow-sm sticky top-0 z-50 border-b">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/user.css" />
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- ============ HEADER ============ -->
+<header id="masterHeader" class="bg-white/95 backdrop-blur shadow-sm sticky top-0 z-50 border-b">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-    <a href="../../index.html" data-link="home" class="flex items-center gap-3">
-      <img src="../../assets/images/logo/logo.png" data-img="logo" alt="Logo" class="w-10 h-10 object-contain">
+    <a href="../../index.html" data-spa-link="home" class="flex items-center gap-3">
+      <img src="../../assets/images/logo/logo.png" alt="Logo" class="w-10 h-10 object-contain">
       <span class="text-3xl font-bold text-red-700 serif tracking-tight">Зохиол</span>
     </a>
 
     <nav class="hidden md:flex gap-8 text-sm font-medium">
-      <a href="../../index.html?page=novels" data-link="novels" class="nav-link hover:text-red-600">Зохиолууд</a>
-      <a href="../../index.html?page=new-novels" data-link="new-novels" class="nav-link hover:text-red-600">Шинэ зохиол</a>
-      <a href="../../index.html?page=popular" data-link="popular" class="nav-link hover:text-red-600">Алдартай</a>
-      <a href="../../index.html?page=new-chapters" data-link="new-chapters" class="nav-link hover:text-red-600">Шинэ ангиуд</a>
+      <a href="../../index.html?page=novels" data-spa-link="novels" class="nav-link hover:text-red-600">Зохиолууд</a>
+      <a href="../../index.html?page=new-novels" data-spa-link="new-novels" class="nav-link hover:text-red-600">Шинэ зохиол</a>
+      <a href="../../index.html?page=popular" data-spa-link="popular" class="nav-link hover:text-red-600">Алдартай</a>
+      <a href="../../index.html?page=new-chapters" data-spa-link="new-chapters" class="nav-link hover:text-red-600">Шинэ ангиуд</a>
     </nav>
 
     <div class="flex items-center gap-3">
@@ -24,12 +38,11 @@
       />
 
       <div id="guestActions" class="flex items-center gap-3">
-        <a href="../../pages/auth/login.html" data-link="login"
+        <a href="../../pages/auth/login.html"
            class="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-2xl">
           Нэвтрэх
         </a>
-
-        <a href="../../pages/auth/register.html" data-link="register"
+        <a href="../../pages/auth/register.html"
            class="bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-2xl text-sm font-medium">
           Бүртгүүлэх
         </a>
@@ -37,12 +50,10 @@
 
       <div id="userActions" class="hidden items-center gap-3">
         <span id="navUsername" class="text-sm font-medium text-gray-700"></span>
-
-        <a href="../../pages/user/profile.html" data-link="profile"
+        <a href="../../index.html?page=profile" data-spa-link="profile"
            class="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-2xl">
           Профайл
         </a>
-
         <button id="logoutBtn"
           class="bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-2xl text-sm font-medium">
           Гарах
@@ -56,17 +67,33 @@
   </div>
 </header>
 
+<!-- ============ MOBILE MENU ============ -->
 <div id="mobileMenu" class="hidden bg-white border-b px-6 py-4 md:hidden">
   <div class="flex flex-col gap-3 text-sm font-medium">
-    <a href="../../index.html?page=novels" data-link="novels">Зохиолууд</a>
-    <a href="../../index.html?page=new-novels" data-link="new-novels">Шинэ зохиол</a>
-    <a href="../../index.html?page=popular" data-link="popular">Алдартай</a>
-    <a href="../../index.html?page=new-chapters" data-link="new-chapters">Шинэ ангиуд</a>
+    <a href="../../index.html?page=novels" data-spa-link="novels">Зохиолууд</a>
+    <a href="../../index.html?page=new-novels" data-spa-link="new-novels">Шинэ зохиол</a>
+    <a href="../../index.html?page=popular" data-spa-link="popular">Алдартай</a>
+    <a href="../../index.html?page=new-chapters" data-spa-link="new-chapters">Шинэ ангиуд</a>
   </div>
 </div>
 
-<footer class="bg-gray-900 text-gray-400 py-12 text-center text-sm">
+<!-- ============ PREVIEW CONTENT (for standalone view only) ============ -->
+<div id="previewContent" style="min-height: 60vh; display:flex; align-items:center; justify-content:center;">
+  <div class="text-center">
+    <h1 class="text-3xl font-bold serif text-gray-800 mb-3">User Master Layout Preview</h1>
+    <p class="text-gray-500">Энэ файл нь index.html-д header/footer component болж ачаалагдана.</p>
+    <a href="../../index.html" class="inline-block mt-6 bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-2xl text-sm font-medium">
+      Нүүр хуудас руу очих
+    </a>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer id="masterFooter" class="bg-gray-900 text-gray-400 py-12 text-center text-sm">
   <div class="max-w-7xl mx-auto px-6">
     © 2026 Zohiol.com - Монголын веб зохиолын платформ
   </div>
 </footer>
+
+</body>
+</html>

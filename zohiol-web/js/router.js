@@ -329,7 +329,8 @@
     logoutBtn?.addEventListener("click", () => {
       localStorage.removeItem("user");
       localStorage.removeItem("role");
-      navigateTo("home");
+      localStorage.removeItem("email");
+      window.location.href = "./pages/auth/login.html";
     });
   }
 
@@ -412,7 +413,8 @@
   };
 
   // ========== Init ==========
-  document.addEventListener("DOMContentLoaded", function () {
+  // Wait for user-master.html to be loaded, then init
+  function bootRouter() {
     initAuth();
     initSearch();
     initMobileMenu();
@@ -427,5 +429,13 @@
       "",
       window.location.href
     );
-  });
+  }
+
+  // If header already loaded (custom event from index.html)
+  document.addEventListener("masterLoaded", bootRouter);
+
+  // Fallback: if masterLoaded already fired before this script loaded
+  if (document.getElementById("masterHeader")) {
+    bootRouter();
+  }
 })();
