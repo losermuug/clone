@@ -1,179 +1,104 @@
-<!DOCTYPE html>
-<html lang="mn">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Хэрэглэгчид</title>
+<!-- USERS CONTENT -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Нэр эсвэл ID-аар хайх..."
+    class="w-full lg:w-80 px-4 py-3 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
+  />
+  <button onclick="goAddUser()"
+    class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-2xl font-semibold transition text-center">
+    + Хэрэглэгч нэмэх
+  </button>
+</div>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../css/admin.css" />
-</head>
-<body>
-
-  <div class="admin-shell">
-    <div id="adminSidebar"></div>
-
-    <main class="admin-main">
-      <div id="adminTopbar"></div>
-
-      <!-- TOP -->
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Нэр эсвэл ID-аар хайх..."
-          class="w-full lg:w-80 px-4 py-3 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-        />
-
-        <!-- 🔥 ШИНЭ PAGE РУУ ШИЛЖИНЭ -->
-        <a
-          href="add-user.html"
-          class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-2xl font-semibold transition text-center"
-        >
-          + Хэрэглэгч нэмэх
-        </a>
-      </div>
-
-      <!-- STATS -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="admin-panel p-6">
-          <p class="text-xs font-bold uppercase text-slate-400">Нийт хэрэглэгч</p>
-          <p id="totalUsers" class="text-3xl font-bold mt-2">0</p>
-        </div>
-
-        <div class="admin-panel p-6">
-          <p class="text-xs font-bold uppercase text-slate-400">Premium эрхтэй</p>
-          <p id="premiumUsers" class="text-3xl font-bold mt-2">0</p>
-        </div>
-
-        <div class="admin-panel p-6">
-          <p class="text-xs font-bold uppercase text-slate-400">Энэ сарын орлого</p>
-          <p class="text-3xl font-bold mt-2">₮840,000</p>
-        </div>
-      </div>
-
-      <!-- TABLE -->
-      <div class="admin-panel overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left min-w-[1000px]">
-            <thead>
-              <tr class="bg-slate-50 border-b">
-                <th class="px-6 py-4 text-xs text-slate-400">ID</th>
-                <th class="px-6 py-4 text-xs text-slate-400">Хэрэглэгч</th>
-                <th class="px-6 py-4 text-xs text-slate-400">Эхэлсэн</th>
-                <th class="px-6 py-4 text-xs text-slate-400">Дуусах</th>
-                <th class="px-6 py-4 text-xs text-slate-400 text-center">Төлөвлөгөө</th>
-                <th class="px-6 py-4 text-xs text-slate-400 text-center">Статус</th>
-                <th class="px-6 py-4 text-xs text-slate-400 text-right">Үйлдэл</th>
-              </tr>
-            </thead>
-
-            <tbody id="usersTable"></tbody>
-          </table>
-        </div>
-      </div>
-
-    </main>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <div class="admin-panel p-6">
+    <p class="text-xs font-bold uppercase text-slate-400">Нийт хэрэглэгч</p>
+    <p id="totalUsers" class="text-3xl font-bold mt-2">0</p>
   </div>
+  <div class="admin-panel p-6">
+    <p class="text-xs font-bold uppercase text-slate-400">Premium эрхтэй</p>
+    <p id="premiumUsers" class="text-3xl font-bold mt-2">0</p>
+  </div>
+  <div class="admin-panel p-6">
+    <p class="text-xs font-bold uppercase text-slate-400">Энэ сарын орлого</p>
+    <p class="text-3xl font-bold mt-2">₮840,000</p>
+  </div>
+</div>
 
-  <script src="../../js/components.js"></script>
-  <script src="../../js/admin-layout.js"></script>
+<div class="admin-panel overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left min-w-[1000px]">
+      <thead>
+        <tr class="bg-slate-50 border-b">
+          <th class="px-6 py-4 text-xs text-slate-400">ID</th>
+          <th class="px-6 py-4 text-xs text-slate-400">Хэрэглэгч</th>
+          <th class="px-6 py-4 text-xs text-slate-400">Эхэлсэн</th>
+          <th class="px-6 py-4 text-xs text-slate-400">Дуусах</th>
+          <th class="px-6 py-4 text-xs text-slate-400 text-center">Төлөвлөгөө</th>
+          <th class="px-6 py-4 text-xs text-slate-400 text-center">Статус</th>
+          <th class="px-6 py-4 text-xs text-slate-400 text-right">Үйлдэл</th>
+        </tr>
+      </thead>
+      <tbody id="usersTable"></tbody>
+    </table>
+  </div>
+</div>
 
-  <script>
-    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
-    loadComponent("adminTopbar", "../../components/admin-topbar.html");
+<script>
+(function() {
+  var users = JSON.parse(localStorage.getItem("adminUsers")) || [
+    { id: 1024, username: "batjargal.enkh", email: "batjargal@gmail.com", startDate: "2026-03-10", endDate: "2026-06-10", plan: "Premium", active: true },
+    { id: 1023, username: "mandal.bayar", email: "mandal@gmail.com", startDate: "-", endDate: "-", plan: "Үнэгүй", active: true }
+  ];
 
-    // 🔥 LOCAL STORAGE-ООС УНШИНА
-    let users = JSON.parse(localStorage.getItem("adminUsers")) || [
-      { id: 1024, username: "batjargal.enkh", email: "batjargal@gmail.com", startDate: "2026-03-10", endDate: "2026-06-10", plan: "Premium", active: true },
-      { id: 1023, username: "mandal.bayar", email: "mandal@gmail.com", startDate: "-", endDate: "-", plan: "Үнэгүй", active: true }
-    ];
+  var usersTable = document.getElementById("usersTable");
+  var searchInput = document.getElementById("searchInput");
 
-    const usersTable = document.getElementById("usersTable");
-    const searchInput = document.getElementById("searchInput");
+  function renderUsers(data) {
+    if (!data) data = users;
+    usersTable.innerHTML = "";
 
-    function renderUsers(data = users) {
-      usersTable.innerHTML = "";
+    data.forEach(function(u) {
+      var planClass = u.plan === "Premium" ? "bg-purple-100 text-purple-700" : "bg-slate-100 text-slate-600";
+      var statusClass = u.active ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700";
+      var statusText = u.active ? "Идэвхтэй" : "Идэвхгүй";
 
-      data.forEach((u) => {
-        usersTable.innerHTML += `
-          <tr class="border-b hover:bg-slate-50">
-
-            <td class="px-6 py-4 text-sm text-slate-500">#${u.id}</td>
-
-            <td class="px-6 py-4">
-              <div class="flex gap-3 items-center">
-                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-xs font-bold">
-                  ${u.username.substring(0,2).toUpperCase()}
-                </div>
-                <div>
-                  <p class="text-sm font-semibold">${u.username}</p>
-                  <p class="text-xs text-slate-400">${u.email}</p>
-                </div>
-              </div>
-            </td>
-
-            <td class="px-6 py-4 text-sm">${u.startDate || "-"}</td>
-            <td class="px-6 py-4 text-sm">${u.endDate || "-"}</td>
-
-            <td class="px-6 py-4 text-center">
-              <span class="px-3 py-1 rounded-full text-xs ${
-                u.plan === "Premium"
-                  ? "bg-purple-100 text-purple-700"
-                  : "bg-slate-100 text-slate-600"
-              }">
-                ${u.plan}
-              </span>
-            </td>
-
-            <td class="px-6 py-4 text-center">
-              <span class="px-3 py-1 rounded-full text-xs ${
-                u.active
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-              }">
-                ${u.active ? "Идэвхтэй" : "Идэвхгүй"}
-              </span>
-            </td>
-
-            <td class="px-6 py-4 text-right">
-              <button onclick="deleteUser(${u.id})"
-                class="text-red-600 text-sm">
-                Устгах
-              </button>
-            </td>
-
-          </tr>
-        `;
-      });
-
-      document.getElementById("totalUsers").innerText = users.length;
-      document.getElementById("premiumUsers").innerText =
-        users.filter(u => u.plan === "Premium").length;
-    }
-
-    function deleteUser(id) {
-      if (confirm("Устгах уу?")) {
-        users = users.filter(u => u.id !== id);
-        localStorage.setItem("adminUsers", JSON.stringify(users));
-        renderUsers();
-      }
-    }
-
-    searchInput.addEventListener("input", function () {
-      const q = this.value.toLowerCase();
-
-      const filtered = users.filter(u =>
-        u.username.toLowerCase().includes(q) ||
-        u.id.toString().includes(q)
-      );
-
-      renderUsers(filtered);
+      usersTable.innerHTML += '<tr class="border-b hover:bg-slate-50">' +
+        '<td class="px-6 py-4 text-sm text-slate-500">#' + u.id + '</td>' +
+        '<td class="px-6 py-4"><div class="flex gap-3 items-center">' +
+          '<div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-xs font-bold">' + u.username.substring(0,2).toUpperCase() + '</div>' +
+          '<div><p class="text-sm font-semibold">' + u.username + '</p><p class="text-xs text-slate-400">' + u.email + '</p></div>' +
+        '</div></td>' +
+        '<td class="px-6 py-4 text-sm">' + (u.startDate || "-") + '</td>' +
+        '<td class="px-6 py-4 text-sm">' + (u.endDate || "-") + '</td>' +
+        '<td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-xs ' + planClass + '">' + u.plan + '</span></td>' +
+        '<td class="px-6 py-4 text-center"><span class="px-3 py-1 rounded-full text-xs ' + statusClass + '">' + statusText + '</span></td>' +
+        '<td class="px-6 py-4 text-right"><button onclick="deleteUser(' + u.id + ')" class="text-red-600 text-sm">Устгах</button></td>' +
+      '</tr>';
     });
 
-    renderUsers();
-  </script>
+    document.getElementById("totalUsers").innerText = users.length;
+    document.getElementById("premiumUsers").innerText = users.filter(function(u) { return u.plan === "Premium"; }).length;
+  }
 
-</body>
-</html>
+  window.deleteUser = function(id) {
+    if (confirm("Устгах уу?")) {
+      users = users.filter(function(u) { return u.id !== id; });
+      localStorage.setItem("adminUsers", JSON.stringify(users));
+      renderUsers();
+    }
+  };
+
+  searchInput.addEventListener("input", function() {
+    var q = this.value.toLowerCase();
+    var filtered = users.filter(function(u) {
+      return u.username.toLowerCase().includes(q) || u.id.toString().includes(q);
+    });
+    renderUsers(filtered);
+  });
+
+  renderUsers();
+})();
+</script>

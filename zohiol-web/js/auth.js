@@ -17,14 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (username === "admin" && password === "1234") {
         localStorage.setItem("role", "admin");
-        window.location.href = "../admin/dashboard.html";
+        window.location.href = "../admin/admin-master.html";
         return;
       }
 
       localStorage.setItem("user", username);
       localStorage.setItem("role", "user");
 
-      window.location.href = "../user/novels.html";
+      window.location.href = "../../index.html?page=novels";
     });
   }
 

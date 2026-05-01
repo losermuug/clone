@@ -1,229 +1,143 @@
-<!DOCTYPE html>
-<html lang="mn">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Зохиол засах</title>
+<!-- EDIT NOVEL CONTENT -->
+<div class="max-w-3xl admin-panel p-8">
+  <form id="editNovelForm" class="space-y-6">
+    <input type="hidden" id="novelId" />
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../css/admin.css">
-</head>
+    <div>
+      <label class="block text-sm font-semibold mb-2">Зохиолын нэр</label>
+      <input id="title" type="text"
+        class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
+        placeholder="Жишээ: Тэнгэрийн тулаанч" />
+    </div>
 
-<body>
-  <div class="admin-shell">
-    <div id="adminSidebar"></div>
-
-    <main class="admin-main">
-      <div id="adminTopbar"></div>
-
-      <div class="max-w-3xl admin-panel p-8">
-        <form id="editNovelForm" class="space-y-6">
-          <input type="hidden" id="novelId" />
-
-          <div>
-            <label class="block text-sm font-semibold mb-2">Зохиолын нэр</label>
-            <input
-              id="title"
-              type="text"
-              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-              placeholder="Жишээ: Тэнгэрийн тулаанч"
-            />
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-semibold mb-2">Зохиолч</label>
-              <input
-                id="author"
-                type="text"
-                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold mb-2">Ангилал</label>
-              <select
-                id="category"
-                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 bg-white"
-              >
-                <option>Тулаант</option>
-                <option>Уран зөгнөл</option>
-                <option>Адал явдал</option>
-                <option>Романтик</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-semibold mb-2">Ангийн тоо</label>
-              <input
-                id="chapters"
-                type="number"
-                min="0"
-                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold mb-2">Үзэлтийн тоо</label>
-              <input
-                id="views"
-                type="number"
-                min="0"
-                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold mb-2">Cover зураг (path)</label>
-            <input
-              id="img"
-              type="text"
-              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-              placeholder="../../assets/images/covers/book.png"
-            />
-          </div>
-
-          <div class="flex flex-col sm:flex-row gap-4 pt-2">
-            <button
-              type="button"
-              onclick="saveNovel()"
-              class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-semibold transition"
-            >
-              Хадгалах
-            </button>
-
-            <button
-              type="button"
-              onclick="window.location.href='novels-list.html'"
-              class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-900 py-4 rounded-2xl font-semibold transition"
-            >
-              Буцах
-            </button>
-          </div>
-        </form>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold mb-2">Зохиолч</label>
+        <input id="author" type="text"
+          class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500" />
       </div>
-    </main>
-  </div>
+      <div>
+        <label class="block text-sm font-semibold mb-2">Ангилал</label>
+        <select id="category"
+          class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 bg-white">
+          <option>Тулаант</option>
+          <option>Уран зөгнөл</option>
+          <option>Адал явдал</option>
+          <option>Романтик</option>
+        </select>
+      </div>
+    </div>
 
-  <script src="../../js/components.js"></script>
-  <script src="../../js/admin-layout.js"></script>
-  <script>
-    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
-    loadComponent("adminTopbar", "../../components/admin-topbar.html");
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold mb-2">Ангийн тоо</label>
+        <input id="chapters" type="number" min="0"
+          class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500" />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-2">Үзэлтийн тоо</label>
+        <input id="views" type="number" min="0"
+          class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500" />
+      </div>
+    </div>
 
-    const defaultNovels = [
-      {
-        id: 1,
-        title: "Тулааны Бурхан Асура",
-        category: "Тулаант",
-        author: "Б. Эрдэнэбат",
-        chapters: 128,
-        views: 24560,
-        img: "../../assets/images/covers/1.png"
-      },
-      {
-        id: 2,
-        title: "Харанхуйн Хаан",
-        category: "Уран зөгнөл",
-        author: "С. Болормаа",
-        chapters: 87,
-        views: 19840,
-        img: "../../assets/images/covers/2.png"
-      },
-      {
-        id: 3,
-        title: "Сүнсний Зам",
-        category: "Адал явдал",
-        author: "Д. Наранбаатар",
-        chapters: 62,
-        views: 15620,
-        img: "../../assets/images/covers/3.png"
-      },
-      {
-        id: 4,
-        title: "Зүрхний Дуу",
-        category: "Романтик",
-        author: "О. Сувд",
-        chapters: 94,
-        views: 11290,
-        img: "../../assets/images/covers/D.png"
-      }
-    ];
+    <div>
+      <label class="block text-sm font-semibold mb-2">Cover зураг (path)</label>
+      <input id="img" type="text"
+        class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
+        placeholder="../../assets/images/covers/book.png" />
+    </div>
 
-    function getNovels() {
-      const stored = JSON.parse(localStorage.getItem("adminNovels"));
-      if (stored && stored.length) return stored;
-      localStorage.setItem("adminNovels", JSON.stringify(defaultNovels));
-      return defaultNovels;
+    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+      <button type="button" onclick="saveNovel()"
+        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-semibold transition">
+        Хадгалах
+      </button>
+      <button type="button" onclick="goNovelsList()"
+        class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-900 py-4 rounded-2xl font-semibold transition">
+        Буцах
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+(function() {
+  var defaultNovels = [
+    { id: 1, title: "Тулааны Бурхан Асура", category: "Тулаант", author: "Б. Эрдэнэбат", chapters: 128, views: 24560, img: "../../assets/images/covers/1.png" },
+    { id: 2, title: "Харанхуйн Хаан", category: "Уран зөгнөл", author: "С. Болормаа", chapters: 87, views: 19840, img: "../../assets/images/covers/2.png" },
+    { id: 3, title: "Сүнсний Зам", category: "Адал явдал", author: "Д. Наранбаатар", chapters: 62, views: 15620, img: "../../assets/images/covers/3.png" },
+    { id: 4, title: "Зүрхний Дуу", category: "Романтик", author: "О. Сувд", chapters: 94, views: 11290, img: "../../assets/images/covers/D.png" }
+  ];
+
+  function getNovels() {
+    var stored = JSON.parse(localStorage.getItem("adminNovels"));
+    if (stored && stored.length) return stored;
+    localStorage.setItem("adminNovels", JSON.stringify(defaultNovels));
+    return defaultNovels;
+  }
+
+  function getNovelIdFromUrl() {
+    var params = new URLSearchParams(window.location.search);
+    return Number(params.get("id"));
+  }
+
+  function loadNovel() {
+    var novels = getNovels();
+    var id = getNovelIdFromUrl();
+    var novel = novels.find(function(n) { return n.id === id; });
+
+    if (!novel) {
+      alert("Зохиол олдсонгүй");
+      goNovelsList();
+      return;
     }
 
-    function getNovelIdFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      return Number(params.get("id"));
+    document.getElementById("novelId").value = novel.id;
+    document.getElementById("title").value = novel.title || "";
+    document.getElementById("author").value = novel.author || "";
+    document.getElementById("category").value = novel.category || "Тулаант";
+    document.getElementById("chapters").value = novel.chapters || 0;
+    document.getElementById("views").value = novel.views || 0;
+    document.getElementById("img").value = novel.img || "";
+  }
+
+  window.saveNovel = function() {
+    var id = Number(document.getElementById("novelId").value);
+    var title = document.getElementById("title").value.trim();
+    var author = document.getElementById("author").value.trim();
+    var category = document.getElementById("category").value.trim();
+    var chapters = Number(document.getElementById("chapters").value || 0);
+    var views = Number(document.getElementById("views").value || 0);
+    var img = document.getElementById("img").value.trim();
+
+    if (!title) {
+      alert("Зохиолын нэр оруулна уу");
+      return;
     }
 
-    function loadNovel() {
-      const novels = getNovels();
-      const id = getNovelIdFromUrl();
-      const novel = novels.find((n) => n.id === id);
+    var novels = getNovels();
+    var index = novels.findIndex(function(n) { return n.id === id; });
 
-      if (!novel) {
-        alert("Зохиол олдсонгүй");
-        window.location.href = "novels-list.html";
-        return;
-      }
-
-      document.getElementById("novelId").value = novel.id;
-      document.getElementById("title").value = novel.title || "";
-      document.getElementById("author").value = novel.author || "";
-      document.getElementById("category").value = novel.category || "Тулаант";
-      document.getElementById("chapters").value = novel.chapters ?? 0;
-      document.getElementById("views").value = novel.views ?? 0;
-      document.getElementById("img").value = novel.img || "";
+    if (index === -1) {
+      alert("Зохиол олдсонгүй");
+      return;
     }
 
-    function saveNovel() {
-      const id = Number(document.getElementById("novelId").value);
-      const title = document.getElementById("title").value.trim();
-      const author = document.getElementById("author").value.trim();
-      const category = document.getElementById("category").value.trim();
-      const chapters = Number(document.getElementById("chapters").value || 0);
-      const views = Number(document.getElementById("views").value || 0);
-      const img = document.getElementById("img").value.trim();
+    novels[index] = Object.assign({}, novels[index], {
+      title: title,
+      author: author,
+      category: category,
+      chapters: chapters,
+      views: views,
+      img: img
+    });
 
-      if (!title) {
-        alert("Зохиолын нэр оруулна уу");
-        return;
-      }
+    localStorage.setItem("adminNovels", JSON.stringify(novels));
+    alert("Амжилттай хадгаллаа");
+    goNovelsList();
+  };
 
-      const novels = getNovels();
-      const index = novels.findIndex((n) => n.id === id);
-
-      if (index === -1) {
-        alert("Зохиол олдсонгүй");
-        return;
-      }
-
-      novels[index] = {
-        ...novels[index],
-        title,
-        author,
-        category,
-        chapters,
-        views,
-        img
-      };
-
-      localStorage.setItem("adminNovels", JSON.stringify(novels));
-      alert("Амжилттай хадгаллаа");
-      window.location.href = "novels-list.html";
-    }
-
-    loadNovel();
-  </script>
-</body>
-</html>
+  loadNovel();
+})();
+</script>

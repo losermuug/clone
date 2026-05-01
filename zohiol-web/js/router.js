@@ -43,6 +43,31 @@
       page: "./pages/user/read.html",
       title: "Анги унших - Zohiol Web",
       scripts: []
+    },
+    profile: {
+      page: "./pages/user/profile.html",
+      title: "Миний булан - Zohiol Web",
+      scripts: []
+    },
+    favorites: {
+      page: "./pages/user/favorites.html",
+      title: "Дуртай зохиол - Zohiol Web",
+      scripts: []
+    },
+    "my-reading": {
+      page: "./pages/user/my-reading.html",
+      title: "Сүүлд уншсан - Zohiol Web",
+      scripts: []
+    },
+    payment: {
+      page: "./pages/user/payment.html",
+      title: "Эрх сунгах - Zohiol Web",
+      scripts: []
+    },
+    transactions: {
+      page: "./pages/user/transactions.html",
+      title: "Гүйлгээний түүх - Zohiol Web",
+      scripts: []
     }
   };
 
@@ -210,6 +235,21 @@
       case "read":
         url = `./index.html?page=read&id=${params.id || 1}&chapter=${params.chapter || 1}`;
         break;
+      case "profile":
+        url = "./index.html?page=profile";
+        break;
+      case "favorites":
+        url = "./index.html?page=favorites";
+        break;
+      case "my-reading":
+        url = "./index.html?page=my-reading";
+        break;
+      case "payment":
+        url = "./index.html?page=payment";
+        break;
+      case "transactions":
+        url = "./index.html?page=transactions";
+        break;
       default:
         url = "./index.html";
     }
@@ -340,6 +380,34 @@
   };
 
   window.goNovels = function () {
+    navigateTo("novels");
+  };
+
+  window.goUserProfile = function () {
+    navigateTo("profile");
+  };
+
+  window.goProfile = function () {
+    navigateTo("profile");
+  };
+
+  window.goFavorites = function () {
+    navigateTo("favorites");
+  };
+
+  window.goMyReading = function () {
+    navigateTo("my-reading");
+  };
+
+  window.goPayment = function () {
+    navigateTo("payment");
+  };
+
+  window.goTransactions = function () {
+    navigateTo("transactions");
+  };
+
+  window.goUserNovels = function () {
     navigateTo("novels");
   };
 

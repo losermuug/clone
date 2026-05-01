@@ -1,164 +1,104 @@
-<!DOCTYPE html>
-<html lang="mn">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Хэрэглэгч нэмэх</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../css/admin.css" />
-</head>
-
-<body>
-  <div class="admin-shell">
-    <div id="adminSidebar"></div>
-
-    <main class="admin-main">
-      <div id="adminTopbar"></div>
-
-      <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 class="text-3xl font-bold serif">Хэрэглэгч нэмэх</h1>
-          <p class="text-slate-500 mt-2">Шинэ хэрэглэгчийн мэдээлэл бүртгэх</p>
-        </div>
-
-        <a href="users.html"
-          class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-2xl font-semibold text-center">
-          ← Буцах
-        </a>
-      </div>
-
-      <div class="admin-panel p-8 rounded-3xl max-w-3xl">
-        <form id="addUserForm" class="space-y-6">
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Хэрэглэгчийн нэр</label>
-            <input
-              type="text"
-              id="username"
-              placeholder="batjargal_e"
-              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="user@gmail.com"
-              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-            />
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Эхлэх огноо</label>
-              <input
-                type="date"
-                id="startDate"
-                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Дуусах огноо</label>
-              <input
-                type="date"
-                id="endDate"
-                class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Төлөвлөгөө</label>
-            <select
-              id="plan"
-              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 bg-white"
-            >
-              <option value="Үнэгүй">Үнэгүй хэрэглэгч</option>
-              <option value="Premium">Premium хэрэглэгч</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Статус</label>
-            <select
-              id="active"
-              class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 bg-white"
-            >
-              <option value="true">Идэвхтэй</option>
-              <option value="false">Идэвхгүй</option>
-            </select>
-          </div>
-
-          <div class="flex flex-col sm:flex-row gap-4 pt-3">
-            <button
-              type="button"
-              onclick="saveUser()"
-              class="flex-1 bg-red-600 hover:bg-red-700 text-white py-4 rounded-2xl font-semibold transition"
-            >
-              Хэрэглэгч нэмэх
-            </button>
-
-            <button
-              type="button"
-              onclick="resetForm()"
-              class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-4 rounded-2xl font-semibold transition"
-            >
-              Цэвэрлэх
-            </button>
-          </div>
-
-        </form>
-      </div>
-    </main>
+<!-- ADD USER CONTENT -->
+<div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+  <div>
+    <h1 class="text-3xl font-bold serif">Хэрэглэгч нэмэх</h1>
+    <p class="text-slate-500 mt-2">Шинэ хэрэглэгчийн мэдээлэл бүртгэх</p>
   </div>
+  <button onclick="goUsers()"
+    class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-2xl font-semibold text-center">
+    ← Буцах
+  </button>
+</div>
 
-  <script src="../../js/components.js"></script>
-  <script src="../../js/admin-layout.js"></script>
+<div class="admin-panel p-8 rounded-3xl max-w-3xl">
+  <form id="addUserForm" class="space-y-6">
 
-  <script>
-    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
-    loadComponent("adminTopbar", "../../components/admin-topbar.html");
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Хэрэглэгчийн нэр</label>
+      <input type="text" id="username" placeholder="batjargal_e"
+        class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500" />
+    </div>
 
-    function saveUser() {
-      const username = document.getElementById("username").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const startDate = document.getElementById("startDate").value || "-";
-      const endDate = document.getElementById("endDate").value || "-";
-      const plan = document.getElementById("plan").value;
-      const active = document.getElementById("active").value === "true";
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Email</label>
+      <input type="email" id="email" placeholder="user@gmail.com"
+        class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500" />
+    </div>
 
-      if (!username) {
-        alert("Хэрэглэгчийн нэр оруулна уу!");
-        return;
-      }
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Эхлэх огноо</label>
+        <input type="date" id="startDate"
+          class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500" />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Дуусах огноо</label>
+        <input type="date" id="endDate"
+          class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500" />
+      </div>
+    </div>
 
-      let users = JSON.parse(localStorage.getItem("adminUsers")) || [];
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Төлөвлөгөө</label>
+      <select id="plan"
+        class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 bg-white">
+        <option value="Үнэгүй">Үнэгүй хэрэглэгч</option>
+        <option value="Premium">Premium хэрэглэгч</option>
+      </select>
+    </div>
 
-      const newUser = {
-        id: Math.floor(1000 + Math.random() * 9000),
-        username: username,
-        email: email || username + "@zohiol.mn",
-        startDate: startDate,
-        endDate: endDate,
-        plan: plan,
-        active: active
-      };
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Статус</label>
+      <select id="active"
+        class="w-full px-4 py-4 border border-slate-200 rounded-2xl outline-none focus:border-red-500 bg-white">
+        <option value="true">Идэвхтэй</option>
+        <option value="false">Идэвхгүй</option>
+      </select>
+    </div>
 
-      users.unshift(newUser);
-      localStorage.setItem("adminUsers", JSON.stringify(users));
+    <div class="flex flex-col sm:flex-row gap-4 pt-3">
+      <button type="button" onclick="saveUser()"
+        class="flex-1 bg-red-600 hover:bg-red-700 text-white py-4 rounded-2xl font-semibold transition">
+        Хэрэглэгч нэмэх
+      </button>
+      <button type="button" onclick="document.getElementById('addUserForm').reset()"
+        class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-4 rounded-2xl font-semibold transition">
+        Цэвэрлэх
+      </button>
+    </div>
 
-      alert("Хэрэглэгч амжилттай нэмэгдлээ!");
-      window.location.href = "users.html";
+  </form>
+</div>
+
+<script>
+(function() {
+  window.saveUser = function() {
+    var username = document.getElementById("username").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var startDate = document.getElementById("startDate").value || "-";
+    var endDate = document.getElementById("endDate").value || "-";
+    var plan = document.getElementById("plan").value;
+    var active = document.getElementById("active").value === "true";
+
+    if (!username) {
+      alert("Хэрэглэгчийн нэр оруулна уу!");
+      return;
     }
 
-    function resetForm() {
-      document.getElementById("addUserForm").reset();
-    }
-  </script>
-</body>
-</html>
+    var users = JSON.parse(localStorage.getItem("adminUsers")) || [];
+    users.unshift({
+      id: Math.floor(1000 + Math.random() * 9000),
+      username: username,
+      email: email || username + "@zohiol.mn",
+      startDate: startDate,
+      endDate: endDate,
+      plan: plan,
+      active: active
+    });
+
+    localStorage.setItem("adminUsers", JSON.stringify(users));
+    alert("Хэрэглэгч амжилттай нэмэгдлээ!");
+    goUsers();
+  };
+})();
+</script>

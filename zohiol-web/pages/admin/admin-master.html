@@ -3,31 +3,313 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Master</title>
+  <title>Admin - Zohiol Web</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/admin.css">
+
+  <style>
+    #adminApp {
+      opacity: 1;
+      transition: opacity 0.15s ease;
+    }
+    #adminApp.loading {
+      opacity: 0;
+    }
+  </style>
 </head>
 
 <body>
-
   <div class="admin-shell">
-    <div id="adminSidebar"></div>
 
+    <!-- SIDEBAR (static, loads once) -->
+    <aside class="admin-sidebar">
+      <div>
+        <div class="admin-sidebar__brand">
+          <img src="../../assets/images/logo/logo.png" alt="Logo" class="admin-sidebar__logo">
+          <div>
+            <p class="admin-sidebar__title">Zohiol Admin</p>
+            <p class="admin-sidebar__subtitle">Удирдлагын хэсэг</p>
+          </div>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a href="#" data-admin-link="dashboard" class="admin-sidebar__link">Dashboard</a>
+          <a href="#" data-admin-link="novels-list" class="admin-sidebar__link">Зохиолууд</a>
+          <a href="#" data-admin-link="users" class="admin-sidebar__link">Хэрэглэгчид</a>
+        </nav>
+      </div>
+
+      <div class="admin-sidebar__bottom">
+        <a href="../../index.html" class="admin-sidebar__home">Сайт руу буцах</a>
+        <button type="button" id="adminLogoutBtn" class="admin-sidebar__logout">Гарах</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
     <main class="admin-main">
-      <div id="adminTopbar"></div>
+      <!-- TOPBAR (static) -->
+      <div class="admin-topbar">
+        <div>
+          <h1 id="adminPageTitle" class="admin-topbar__title">Dashboard</h1>
+          <p id="adminPageDesc" class="admin-topbar__desc">Системийн ерөнхий хяналт</p>
+        </div>
+        <div class="admin-badge">
+          <span class="admin-badge__dot"></span>
+          Админ горим
+        </div>
+      </div>
 
-      <section id="pageContent">
-        <!-- Энд admin page-ийн content орно -->
-      </section>
+      <!-- Dynamic content area -->
+      <div id="adminApp"></div>
     </main>
+
   </div>
 
-  <script src="../../js/components.js"></script>
-  <script src="../../js/admin-layout.js"></script>
   <script>
-    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
-    loadComponent("adminTopbar", "../../components/admin-topbar.html");
+  (function() {
+    "use strict";
+
+    // ========== Route Definitions ==========
+    var routes = {
+      dashboard: {
+        page: "dashboard.html",
+        title: "Dashboard - Admin",
+        pageTitle: "Админ удирдлага",
+        pageDesc: "Системийн ерөнхий хяналт, хурдан удирдлага"
+      },
+      "novels-list": {
+        page: "novels-list.html",
+        title: "Зохиолууд - Admin",
+        pageTitle: "Зохиолын жагсаалт",
+        pageDesc: "Бүх зохиолыг харах, засах, удирдах"
+      },
+      "add-novel": {
+        page: "add-novel.html",
+        title: "Зохиол нэмэх - Admin",
+        pageTitle: "Зохиол нэмэх",
+        pageDesc: "Шинэ зохиолын үндсэн мэдээлэл бүртгэх"
+      },
+      "add-chapter": {
+        page: "add-chapter.html",
+        title: "Анги нэмэх - Admin",
+        pageTitle: "Анги удирдах",
+        pageDesc: "Зохиолын анги нэмэх, засах, жагсаах"
+      },
+      users: {
+        page: "users.html",
+        title: "Хэрэглэгчид - Admin",
+        pageTitle: "Хэрэглэгчид",
+        pageDesc: "Хэрэглэгчийн бүртгэл, эрх, төлөв удирдах"
+      },
+      "add-user": {
+        page: "add-user.html",
+        title: "Хэрэглэгч нэмэх - Admin",
+        pageTitle: "Хэрэглэгч нэмэх",
+        pageDesc: "Шинэ хэрэглэгчийн мэдээлэл бүртгэх"
+      },
+      "edit-novel": {
+        page: "edit-novel.html",
+        title: "Зохиол засах - Admin",
+        pageTitle: "Зохиол засах",
+        pageDesc: "Одоо байгаа зохиолын мэдээллийг шинэчлэх"
+      }
+    };
+
+    var currentRoute = null;
+
+    // ========== Active Nav Highlight ==========
+    function updateActiveNav(routeKey) {
+      document.querySelectorAll("[data-admin-link]").forEach(function(link) {
+        link.classList.remove("active");
+      });
+
+      // highlight parent route too (add-novel -> novels-list, add-chapter -> novels-list, etc.)
+      var highlight = routeKey;
+      if (routeKey === "add-novel" || routeKey === "add-chapter" || routeKey === "edit-novel") highlight = "novels-list";
+      if (routeKey === "add-user") highlight = "users";
+
+      document.querySelectorAll('[data-admin-link="' + highlight + '"]').forEach(function(link) {
+        link.classList.add("active");
+      });
+    }
+
+    // ========== Update Topbar ==========
+    function updateTopbar(route) {
+      var titleEl = document.getElementById("adminPageTitle");
+      var descEl = document.getElementById("adminPageDesc");
+      if (titleEl) titleEl.textContent = route.pageTitle || "";
+      if (descEl) descEl.textContent = route.pageDesc || "";
+    }
+
+    // ========== Inline Script Execution ==========
+    function runInlineScripts(container) {
+      var scripts = container.querySelectorAll("script");
+      scripts.forEach(function(oldScript) {
+        var newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        newScript.dataset.adminScript = "true";
+        oldScript.replaceWith(newScript);
+      });
+    }
+
+    // ========== Core Navigation ==========
+    function navigateTo(routeKey, params, pushState) {
+      if (pushState === undefined) pushState = true;
+      if (!params) params = {};
+
+      var route = routes[routeKey];
+      if (!route) {
+        console.warn("Unknown admin route:", routeKey);
+        return;
+      }
+
+      if (currentRoute === routeKey && routeKey !== "add-chapter" && routeKey !== "edit-novel") {
+        return;
+      }
+
+      var app = document.getElementById("adminApp");
+      if (!app) return;
+
+      // Fade out
+      app.classList.add("loading");
+
+      fetch(route.page + "?v=" + Date.now())
+        .then(function(res) {
+          if (!res.ok) throw new Error("Page not found");
+          return res.text();
+        })
+        .then(function(html) {
+          setTimeout(function() {
+            app.innerHTML = html;
+            document.title = route.title;
+
+            updateTopbar(route);
+            updateActiveNav(routeKey);
+            currentRoute = routeKey;
+
+            // Remove old admin scripts
+            document.querySelectorAll("script[data-admin-script]").forEach(function(s) { s.remove(); });
+
+            // Run inline scripts
+            runInlineScripts(app);
+
+            // Update URL
+            if (pushState) {
+              var url = buildUrl(routeKey, params);
+              history.pushState({ route: routeKey, params: params }, "", url);
+            }
+
+            window.scrollTo({ top: 0, behavior: "instant" });
+
+            // Fade in
+            app.classList.remove("loading");
+          }, 100);
+        })
+        .catch(function(err) {
+          console.error("Admin navigation error:", err);
+          app.innerHTML = '<div class="admin-panel p-8 text-center"><h2 class="text-xl font-bold mb-2">Хуудас олдсонгүй</h2><p class="text-slate-500">Алдаа гарлаа.</p></div>';
+          app.classList.remove("loading");
+        });
+    }
+
+    // ========== URL Builder ==========
+    function buildUrl(routeKey, params) {
+      if (!params) params = {};
+      var base = "admin-master.html?page=" + routeKey;
+      if (params.id) base += "&id=" + params.id;
+      if (params.novelId) base += "&novelId=" + params.novelId;
+      return base;
+    }
+
+    // ========== Parse URL to Route ==========
+    function parseUrlToRoute() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var page = urlParams.get("page");
+      var params = {};
+
+      if (urlParams.has("id")) params.id = urlParams.get("id");
+      if (urlParams.has("novelId")) params.novelId = urlParams.get("novelId");
+
+      return {
+        routeKey: page && routes[page] ? page : "dashboard",
+        params: params
+      };
+    }
+
+    // ========== Event Handlers ==========
+    document.addEventListener("click", function(e) {
+      var link = e.target.closest("[data-admin-link]");
+      if (!link) return;
+
+      e.preventDefault();
+      var routeKey = link.dataset.adminLink;
+      var params = {};
+      if (link.dataset.id) params.id = link.dataset.id;
+      if (link.dataset.novelId) params.novelId = link.dataset.novelId;
+
+      navigateTo(routeKey, params);
+    });
+
+    // Browser back/forward
+    window.addEventListener("popstate", function(e) {
+      if (e.state && e.state.route) {
+        navigateTo(e.state.route, e.state.params || {}, false);
+      } else {
+        var parsed = parseUrlToRoute();
+        navigateTo(parsed.routeKey, parsed.params, false);
+      }
+    });
+
+    // ========== Global Functions ==========
+    window.adminNavigate = navigateTo;
+
+    window.goAddNovel = function() {
+      navigateTo("add-novel");
+    };
+
+    window.goAddChapter = function(novelId) {
+      navigateTo("add-chapter", { novelId: novelId });
+    };
+
+    window.goUsers = function() {
+      navigateTo("users");
+    };
+
+    window.goAddUser = function() {
+      navigateTo("add-user");
+    };
+
+    window.goEditNovel = function(id) {
+      navigateTo("edit-novel", { id: id });
+    };
+
+    window.goNovelsList = function() {
+      navigateTo("novels-list");
+    };
+
+    // ========== Auth ==========
+    document.getElementById("adminLogoutBtn").addEventListener("click", function() {
+      localStorage.removeItem("user");
+      localStorage.removeItem("role");
+      window.location.href = "../auth/login.html";
+    });
+
+    // ========== Init ==========
+    var parsed = parseUrlToRoute();
+    navigateTo(parsed.routeKey, parsed.params, false);
+
+    history.replaceState(
+      { route: parsed.routeKey, params: parsed.params },
+      "",
+      window.location.href
+    );
+  })();
   </script>
 
 </body>

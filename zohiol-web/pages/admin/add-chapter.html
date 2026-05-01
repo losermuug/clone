@@ -1,363 +1,252 @@
-<!DOCTYPE html>
-<html lang="mn">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Анги удирдах</title>
+<!-- ADD CHAPTER CONTENT -->
+<div class="mb-6 flex justify-between items-center">
+  <div>
+    <h1 class="text-3xl font-bold serif">Анги удирдах</h1>
+    <p class="text-slate-500 mt-1">Зохиолын анги нэмэх, засах, жагсаах</p>
+  </div>
+  <button onclick="goNovelsList()" class="bg-slate-900 text-white px-5 py-3 rounded-xl text-sm">
+    ← Зохиолууд
+  </button>
+</div>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../css/admin.css">
-</head>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-<body>
-  <div class="admin-shell">
-    <div id="adminSidebar"></div>
+  <!-- FORM -->
+  <section class="xl:col-span-2">
+    <div class="admin-panel p-6 rounded-3xl">
+      <form id="chapterForm" class="space-y-5">
 
-    <main class="admin-main">
-      <div id="adminTopbar"></div>
+        <input type="hidden" id="editingId">
 
-      <div class="mb-6 flex justify-between items-center">
         <div>
-          <h1 class="text-3xl font-bold serif">Анги удирдах</h1>
-          <p class="text-slate-500 mt-1">Зохиолын анги нэмэх, засах, жагсаах</p>
+          <label class="block text-sm font-semibold mb-2">Зохиол сонгох</label>
+          <select id="novelSelect"
+            class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500">
+          </select>
         </div>
 
-        <a href="novels-list.html" class="bg-slate-900 text-white px-5 py-3 rounded-xl text-sm">
-          ← Зохиолууд
-        </a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold mb-2">Ангийн дугаар</label>
+            <input id="chapterNumber" type="number" min="1"
+              class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-2">Ангийн гарчиг</label>
+            <input id="chapterTitle" type="text"
+              class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-2">Агуулга</label>
+          <textarea id="chapterContent" rows="10"
+            class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500 resize-none"></textarea>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button type="button" onclick="saveChapter()"
+            class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold">
+            Хадгалах
+          </button>
+          <button type="button" onclick="resetForm()"
+            class="flex-1 bg-slate-200 hover:bg-slate-300 py-3 rounded-xl font-semibold">
+            Цэвэрлэх
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- CHAPTER LIST -->
+  <aside class="xl:col-span-1">
+    <div class="admin-panel p-5 rounded-3xl sticky top-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold serif">Өмнөх ангиуд</h2>
+        <span id="chapterCount" class="text-xs bg-slate-100 px-3 py-1 rounded-full">0 анги</span>
       </div>
+      <div id="chapterList" class="space-y-3 max-h-[620px] overflow-y-auto pr-1"></div>
+    </div>
+  </aside>
 
-      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+</div>
 
-        <!-- FORM -->
-        <section class="xl:col-span-2">
-          <div class="admin-panel p-6 rounded-3xl">
-            <form id="chapterForm" class="space-y-5">
+<script>
+(function() {
+  var defaultNovels = [
+    { id: 1, title: "Тулааны Бурхан Асура", category: "Тулаант", author: "Б. Эрдэнэбат", chapters: 128, views: 24560, img: "../../assets/images/covers/1.png" },
+    { id: 2, title: "Харанхуйн Хаан", category: "Уран зөгнөл", author: "С. Болормаа", chapters: 87, views: 19840, img: "../../assets/images/covers/2.png" },
+    { id: 3, title: "Сүнсний Зам", category: "Адал явдал", author: "Д. Наранбаатар", chapters: 62, views: 15620, img: "../../assets/images/covers/3.png" },
+    { id: 4, title: "Зүрхний Дуу", category: "Романтик", author: "О. Сувд", chapters: 94, views: 11290, img: "../../assets/images/covers/D.png" }
+  ];
 
-              <input type="hidden" id="editingId">
+  var novels = JSON.parse(localStorage.getItem("adminNovels")) || defaultNovels;
+  var chapters = JSON.parse(localStorage.getItem("adminChapters")) || [];
 
-              <div>
-                <label class="block text-sm font-semibold mb-2">Зохиол сонгох</label>
-                <select id="novelSelect"
-                  class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500">
-                </select>
-              </div>
+  var params = new URLSearchParams(window.location.search);
+  var novelIdFromUrl = params.get("novelId");
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-semibold mb-2">Ангийн дугаар</label>
-                  <input id="chapterNumber" type="number" min="1"
-                    class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500">
-                </div>
+  var novelSelect = document.getElementById("novelSelect");
+  var chapterNumber = document.getElementById("chapterNumber");
+  var chapterTitle = document.getElementById("chapterTitle");
+  var chapterContent = document.getElementById("chapterContent");
+  var editingId = document.getElementById("editingId");
+  var chapterList = document.getElementById("chapterList");
+  var chapterCount = document.getElementById("chapterCount");
 
-                <div>
-                  <label class="block text-sm font-semibold mb-2">Ангийн гарчиг</label>
-                  <input id="chapterTitle" type="text"
-                    class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500">
-                </div>
-              </div>
+  function initNovels() {
+    if (!localStorage.getItem("adminNovels")) {
+      localStorage.setItem("adminNovels", JSON.stringify(defaultNovels));
+    }
+    novelSelect.innerHTML = '<option value="">-- Зохиол сонгоно уу --</option>';
+    novels.forEach(function(novel) {
+      novelSelect.innerHTML += '<option value="' + novel.id + '">' + novel.title + '</option>';
+    });
+    if (novelIdFromUrl) {
+      novelSelect.value = novelIdFromUrl;
+    }
+  }
 
-              <div>
-                <label class="block text-sm font-semibold mb-2">Агуулга</label>
-                <textarea id="chapterContent" rows="10"
-                  class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-red-500 resize-none"></textarea>
-              </div>
+  function getSelectedNovelChapters() {
+    var selectedId = novelSelect.value;
+    return chapters
+      .filter(function(ch) { return String(ch.novelId) === String(selectedId); })
+      .sort(function(a, b) { return Number(a.number) - Number(b.number); });
+  }
 
-              <div class="flex flex-col sm:flex-row gap-3">
-                <button type="button" onclick="saveChapter()"
-                  class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold">
-                  Хадгалах
-                </button>
+  function renderChapters() {
+    var selectedId = novelSelect.value;
+    chapterList.innerHTML = "";
 
-                <button type="button" onclick="resetForm()"
-                  class="flex-1 bg-slate-200 hover:bg-slate-300 py-3 rounded-xl font-semibold">
-                  Цэвэрлэх
-                </button>
-              </div>
-
-            </form>
-          </div>
-        </section>
-
-        <!-- CHAPTER LIST -->
-        <aside class="xl:col-span-1">
-          <div class="admin-panel p-5 rounded-3xl sticky top-8">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-bold serif">Өмнөх ангиуд</h2>
-              <span id="chapterCount" class="text-xs bg-slate-100 px-3 py-1 rounded-full">0 анги</span>
-            </div>
-
-            <div id="chapterList" class="space-y-3 max-h-[620px] overflow-y-auto pr-1"></div>
-          </div>
-        </aside>
-
-      </div>
-    </main>
-  </div>
-
-  <script src="../../js/components.js"></script>
-  <script src="../../js/admin-layout.js"></script>
-
-  <script>
-    loadComponent("adminSidebar", "../../components/admin-sidebar.html");
-    loadComponent("adminTopbar", "../../components/admin-topbar.html");
-
-    const defaultNovels = [
-      {
-        id: 1,
-        title: "Тулааны Бурхан Асура",
-        category: "Тулаант",
-        author: "Б. Эрдэнэбат",
-        chapters: 128,
-        views: 24560,
-        img: "../../assets/images/covers/1.png"
-      },
-      {
-        id: 2,
-        title: "Харанхуйн Хаан",
-        category: "Уран зөгнөл",
-        author: "С. Болормаа",
-        chapters: 87,
-        views: 19840,
-        img: "../../assets/images/covers/2.png"
-      },
-      {
-        id: 3,
-        title: "Сүнсний Зам",
-        category: "Адал явдал",
-        author: "Д. Наранбаатар",
-        chapters: 62,
-        views: 15620,
-        img: "../../assets/images/covers/3.png"
-      },
-      {
-        id: 4,
-        title: "Зүрхний Дуу",
-        category: "Романтик",
-        author: "О. Сувд",
-        chapters: 94,
-        views: 11290,
-        img: "../../assets/images/covers/D.png"
-      }
-    ];
-
-    let novels = JSON.parse(localStorage.getItem("adminNovels")) || defaultNovels;
-    let chapters = JSON.parse(localStorage.getItem("adminChapters")) || [];
-
-    const params = new URLSearchParams(window.location.search);
-    const novelIdFromUrl = params.get("novelId");
-
-    const novelSelect = document.getElementById("novelSelect");
-    const chapterNumber = document.getElementById("chapterNumber");
-    const chapterTitle = document.getElementById("chapterTitle");
-    const chapterContent = document.getElementById("chapterContent");
-    const editingId = document.getElementById("editingId");
-    const chapterList = document.getElementById("chapterList");
-    const chapterCount = document.getElementById("chapterCount");
-
-    function initNovels() {
-      if (!localStorage.getItem("adminNovels")) {
-        localStorage.setItem("adminNovels", JSON.stringify(defaultNovels));
-      }
-
-      novelSelect.innerHTML = `<option value="">-- Зохиол сонгоно уу --</option>`;
-
-      novels.forEach(novel => {
-        novelSelect.innerHTML += `
-          <option value="${novel.id}">${novel.title}</option>
-        `;
-      });
-
-      if (novelIdFromUrl) {
-        novelSelect.value = novelIdFromUrl;
-      }
+    if (!selectedId) {
+      chapterCount.textContent = "0 анги";
+      chapterList.innerHTML = '<div class="text-center text-slate-400 bg-slate-50 rounded-2xl p-6">Эхлээд зохиол сонгоно уу.</div>';
+      return;
     }
 
-    function getSelectedNovelChapters() {
-      const selectedId = novelSelect.value;
+    var list = getSelectedNovelChapters();
+    chapterCount.textContent = list.length + " анги";
 
-      return chapters
-        .filter(ch => String(ch.novelId) === String(selectedId))
-        .sort((a, b) => Number(a.number) - Number(b.number));
+    if (!list.length) {
+      chapterList.innerHTML = '<div class="text-center text-slate-400 bg-slate-50 rounded-2xl p-6">Энэ зохиолд анги нэмэгдээгүй байна.</div>';
+      return;
     }
 
-    function renderChapters() {
-      const selectedId = novelSelect.value;
-      chapterList.innerHTML = "";
+    list.forEach(function(ch) {
+      chapterList.innerHTML += '<div class="border border-slate-200 rounded-2xl p-4 bg-white hover:bg-slate-50 transition">' +
+        '<div class="flex justify-between gap-3">' +
+          '<div>' +
+            '<p class="font-bold text-sm">' + ch.number + '-р анги</p>' +
+            '<p class="text-sm text-slate-600 mt-1">' + ch.title + '</p>' +
+          '</div>' +
+        '</div>' +
+        '<p class="text-xs text-slate-400 mt-2 line-clamp-2">' + ch.content.slice(0, 90) + '...</p>' +
+        '<div class="flex gap-2 mt-3">' +
+          '<button onclick="editChapter(' + ch.id + ')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs">Засах</button>' +
+          '<button onclick="deleteChapter(' + ch.id + ')" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-xs">Устгах</button>' +
+        '</div>' +
+      '</div>';
+    });
+  }
 
-      if (!selectedId) {
-        chapterCount.textContent = "0 анги";
-        chapterList.innerHTML = `
-          <div class="text-center text-slate-400 bg-slate-50 rounded-2xl p-6">
-            Эхлээд зохиол сонгоно уу.
-          </div>
-        `;
-        return;
-      }
+  window.saveChapter = function() {
+    var novelId = novelSelect.value;
+    var number = chapterNumber.value.trim();
+    var title = chapterTitle.value.trim();
+    var content = chapterContent.value.trim();
+    var editId = editingId.value;
 
-      const list = getSelectedNovelChapters();
-      chapterCount.textContent = `${list.length} анги`;
-
-      if (!list.length) {
-        chapterList.innerHTML = `
-          <div class="text-center text-slate-400 bg-slate-50 rounded-2xl p-6">
-            Энэ зохиолд анги нэмэгдээгүй байна.
-          </div>
-        `;
-        return;
-      }
-
-      list.forEach(ch => {
-        chapterList.innerHTML += `
-          <div class="border border-slate-200 rounded-2xl p-4 bg-white hover:bg-slate-50 transition">
-            <div class="flex justify-between gap-3">
-              <div>
-                <p class="font-bold text-sm">${ch.number}-р анги</p>
-                <p class="text-sm text-slate-600 mt-1">${ch.title}</p>
-              </div>
-
-              <a href="../../pages/user/read.html?id=${ch.novelId}&chapter=${ch.number}"
-                class="text-xs text-red-600 font-semibold hover:underline">
-                Унших
-              </a>
-            </div>
-
-            <p class="text-xs text-slate-400 mt-2 line-clamp-2">
-              ${ch.content.slice(0, 90)}...
-            </p>
-
-            <div class="flex gap-2 mt-3">
-              <button onclick="editChapter(${ch.id})"
-                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs">
-                Засах
-              </button>
-
-              <button onclick="deleteChapter(${ch.id})"
-                class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-xs">
-                Устгах
-              </button>
-            </div>
-          </div>
-        `;
-      });
+    if (!novelId || !number || !title || !content) {
+      alert("Бүх талбарыг бөглөнө үү!");
+      return;
     }
 
-    function saveChapter() {
-      const novelId = novelSelect.value;
-      const number = chapterNumber.value.trim();
-      const title = chapterTitle.value.trim();
-      const content = chapterContent.value.trim();
-      const editId = editingId.value;
-
-      if (!novelId || !number || !title || !content) {
-        alert("Бүх талбарыг бөглөнө үү!");
-        return;
-      }
-
-      const duplicate = chapters.find(ch =>
-        String(ch.novelId) === String(novelId) &&
-        String(ch.number) === String(number) &&
-        String(ch.id) !== String(editId)
-      );
-
-      if (duplicate) {
-        alert("Энэ дугаартай анги өмнө нь байна!");
-        return;
-      }
-
-      if (editId) {
-        chapters = chapters.map(ch => {
-          if (String(ch.id) === String(editId)) {
-            return {
-              ...ch,
-              novelId,
-              number,
-              title,
-              content,
-              updatedAt: new Date().toISOString()
-            };
-          }
-          return ch;
-        });
-      } else {
-        chapters.push({
-          id: Date.now(),
-          novelId,
-          number,
-          title,
-          content,
-          createdAt: new Date().toISOString()
-        });
-      }
-
-      localStorage.setItem("adminChapters", JSON.stringify(chapters));
-      updateNovelChapterCount(novelId);
-      resetForm(false);
-      renderChapters();
-    }
-
-    function editChapter(id) {
-      const ch = chapters.find(item => item.id === id);
-      if (!ch) return;
-
-      novelSelect.value = ch.novelId;
-      chapterNumber.value = ch.number;
-      chapterTitle.value = ch.title;
-      chapterContent.value = ch.content;
-      editingId.value = ch.id;
-
-      renderChapters();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function deleteChapter(id) {
-      if (!confirm("Энэ ангийг устгах уу?")) return;
-
-      const removed = chapters.find(ch => ch.id === id);
-      chapters = chapters.filter(ch => ch.id !== id);
-
-      localStorage.setItem("adminChapters", JSON.stringify(chapters));
-
-      if (removed) {
-        updateNovelChapterCount(removed.novelId);
-      }
-
-      resetForm(false);
-      renderChapters();
-    }
-
-    function resetForm(clearNovel = false) {
-      editingId.value = "";
-      chapterNumber.value = "";
-      chapterTitle.value = "";
-      chapterContent.value = "";
-
-      if (clearNovel) {
-        novelSelect.value = "";
-      }
-    }
-
-    function updateNovelChapterCount(novelId) {
-      const count = chapters.filter(ch => String(ch.novelId) === String(novelId)).length;
-
-      novels = novels.map(novel => {
-        if (String(novel.id) === String(novelId)) {
-          return { ...novel, chapters: count };
-        }
-        return novel;
-      });
-
-      localStorage.setItem("adminNovels", JSON.stringify(novels));
-    }
-
-    novelSelect.addEventListener("change", function () {
-      resetForm(false);
-      renderChapters();
+    var duplicate = chapters.find(function(ch) {
+      return String(ch.novelId) === String(novelId) && String(ch.number) === String(number) && String(ch.id) !== String(editId);
     });
 
-    initNovels();
+    if (duplicate) {
+      alert("Энэ дугаартай анги өмнө нь байна!");
+      return;
+    }
+
+    if (editId) {
+      chapters = chapters.map(function(ch) {
+        if (String(ch.id) === String(editId)) {
+          return Object.assign({}, ch, { novelId: novelId, number: number, title: title, content: content, updatedAt: new Date().toISOString() });
+        }
+        return ch;
+      });
+    } else {
+      chapters.push({
+        id: Date.now(),
+        novelId: novelId,
+        number: number,
+        title: title,
+        content: content,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    localStorage.setItem("adminChapters", JSON.stringify(chapters));
+    updateNovelChapterCount(novelId);
+    resetForm(false);
     renderChapters();
-  </script>
-</body>
-</html>
+  };
+
+  window.editChapter = function(id) {
+    var ch = chapters.find(function(item) { return item.id === id; });
+    if (!ch) return;
+
+    novelSelect.value = ch.novelId;
+    chapterNumber.value = ch.number;
+    chapterTitle.value = ch.title;
+    chapterContent.value = ch.content;
+    editingId.value = ch.id;
+
+    renderChapters();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  window.deleteChapter = function(id) {
+    if (!confirm("Энэ ангийг устгах уу?")) return;
+
+    var removed = chapters.find(function(ch) { return ch.id === id; });
+    chapters = chapters.filter(function(ch) { return ch.id !== id; });
+    localStorage.setItem("adminChapters", JSON.stringify(chapters));
+
+    if (removed) updateNovelChapterCount(removed.novelId);
+    resetForm(false);
+    renderChapters();
+  };
+
+  window.resetForm = function(clearNovel) {
+    if (clearNovel === undefined) clearNovel = true;
+    editingId.value = "";
+    chapterNumber.value = "";
+    chapterTitle.value = "";
+    chapterContent.value = "";
+    if (clearNovel) novelSelect.value = "";
+  };
+
+  function updateNovelChapterCount(novelId) {
+    var count = chapters.filter(function(ch) { return String(ch.novelId) === String(novelId); }).length;
+    novels = novels.map(function(novel) {
+      if (String(novel.id) === String(novelId)) {
+        return Object.assign({}, novel, { chapters: count });
+      }
+      return novel;
+    });
+    localStorage.setItem("adminNovels", JSON.stringify(novels));
+  }
+
+  novelSelect.addEventListener("change", function() {
+    resetForm(false);
+    renderChapters();
+  });
+
+  initNovels();
+  renderChapters();
+})();
+</script>
